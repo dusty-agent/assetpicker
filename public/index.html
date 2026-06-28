@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssetPicker</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<div class="max-w-4xl mx-auto p-8">
+
+    <h1 class="text-4xl font-bold mb-2">
+        🏠 AssetPicker
+    </h1>
+
+    <p class="text-gray-500 mb-8">
+        Today's Real Estate News
+    </p>
+
+    <div id="news-list" class="space-y-4">
+
+    </div>
+
+</div>
+
+<script>
+
+fetch("latest_news.json")
+.then(r => r.json())
+.then(news => {
+
+    const container = document.getElementById("news-list");
+
+    news.slice(0,10).forEach(item => {
+
+        container.innerHTML += `
+        <div class="bg-white rounded-xl shadow p-5">
+
+            <div class="text-xs text-blue-500 mb-2">
+                ${item.category ?? "Uncategorized"}
+            </div>
+
+            <h2 class="text-xl font-semibold">
+                ${item.title}
+            </h2>
+
+            <div class="text-gray-500 mt-2">
+                ${item.source}
+            </div>
+
+            <a
+                href="${item.url}"
+                target="_blank"
+                class="text-blue-600 mt-4 inline-block">
+
+                원문 보기 →
+
+            </a>
+
+        </div>
+        `;
+    });
+
+});
+
+</script>
+
+</body>
+</html>
