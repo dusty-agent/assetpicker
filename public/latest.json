@@ -2,8 +2,46 @@
   "title": "AssetPicker",
   "cards": [
     {
-      "title": "Hello AssetPicker",
-      "body": "첫 번째 카드입니다."
+      "type": "cover",
+      "title": "동탄·기흥·구리도 ‘부동산 3중 규제’ - 조선일보",
+      "subtitle": null,
+      "body": "요약 준비중",
+      "footer": null
+    },
+    {
+      "type": "content",
+      "title": "핵심 요약",
+      "subtitle": null,
+      "body": "요약 준비중",
+      "footer": null
+    },
+    {
+      "type": "content",
+      "title": "왜 중요할까요?",
+      "subtitle": null,
+      "body": "왜 중요한지 분석 준비중",
+      "footer": null
+    },
+    {
+      "type": "content",
+      "title": "실수요자 관점",
+      "subtitle": null,
+      "body": "실수요자 관점 준비중",
+      "footer": null
+    },
+    {
+      "type": "content",
+      "title": "AssetPicker View",
+      "subtitle": null,
+      "body": "AssetPicker 인사이트 준비중",
+      "footer": null
+    },
+    {
+      "type": "brand",
+      "title": "AssetPicker",
+      "subtitle": null,
+      "body": "Helping people make better real estate decisions.",
+      "footer": null
     }
   ]
 }

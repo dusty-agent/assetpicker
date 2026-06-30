@@ -13,6 +13,11 @@ from app.exporters.news_exporter import NewsExporter
 from app.models.card import Card
 from app.models.report import Report
 
+from app.renderer.html_renderer import HtmlRenderer
+from app.renderer.image_renderer import ImageRenderer
+
+from app.services.story_generator import StoryGenerator
+from app.services.cardset_generator import CardSetGenerator
 
 class Generator:
 
@@ -22,7 +27,7 @@ class Generator:
         news = self.collect_news()
         self.analyze_news(news)
 
-        report = self.generate_report()
+        report = self.generate_report(news)
 
         JsonExporter().export(
             report=report,
@@ -61,16 +66,27 @@ class Generator:
         print(f"👨 기자 {len(reporter_stats)}명")
         print(f"🔥 키워드 {len(trend_stats)}개")
 
-    def generate_report(self):
+    def generate_report(self, news):
 
-        cards = [
-            Card(
-                title="Hello AssetPicker",
-                body="첫 번째 카드입니다."
-            )
-        ]
+        # 일단 첫 번째 뉴스로 테스트
+        story = StoryGenerator().generate(news[0])
+
+        cardset = CardSetGenerator().generate(story)
+
+        html_dir = Path("output/html")
+        image_dir = Path("output/images")
+
+        HtmlRenderer().render(
+            cardset=cardset,
+            output_dir=html_dir,
+        )
+
+        ImageRenderer().render(
+            html_dir=html_dir,
+            output_dir=image_dir,
+        )
 
         return Report(
             title="AssetPicker",
-            cards=cards
+            cards=cardset.cards
         )

@@ -1,0 +1,391 @@
+{
+  "sources": [
+    {
+      "source": "v.daum.net",
+      "article_count": 8,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "조선일보",
+      "article_count": 7,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "연합뉴스",
+      "article_count": 7,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "한국경제",
+      "article_count": 3,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "이데일리",
+      "article_count": 3,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "뉴스1",
+      "article_count": 3,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "네이트",
+      "article_count": 3,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "서울신문",
+      "article_count": 3,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "아시아투데이",
+      "article_count": 3,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "블로터",
+      "article_count": 3,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "아유경제",
+      "article_count": 3,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "머니투데이",
+      "article_count": 2,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "중앙일보",
+      "article_count": 2,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "연합뉴스TV",
+      "article_count": 2,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "매일경제",
+      "article_count": 2,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "Chosunbiz",
+      "article_count": 2,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "신아일보",
+      "article_count": 2,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "연합인포맥스",
+      "article_count": 2,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "한겨레",
+      "article_count": 2,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "데일리브리프",
+      "article_count": 2,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "뉴스핌",
+      "article_count": 2,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "파이낸셜뉴스",
+      "article_count": 2,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "Investing.com 한국어",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "KBS 뉴스",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "서울경제",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "경북일보",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "국민일보",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "중부일보",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "강원일보",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "핀포인트뉴스",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "한국영농신문",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "마켓인",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "뉴시안",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "뉴스후플러스",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "부산일보",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "BBS불교방송",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "대한건축사협회 건축사신문",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "진일보",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "데일리안",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "아이뉴스24",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "GNN 뉴스통신",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "tokenpost.kr",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "뉴스비전e",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "M이코노미뉴스",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "세정일보",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "인사이드비나",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "네이버 프리미엄콘텐츠",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "에너지경제신문",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "시사저널e",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "경기신문",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "intn.co.kr",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "아시아타임즈",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "fetv.co.kr",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "비욘드포스트",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "문화일보",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "매일신문",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "뉴스웍스",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "뉴스포스트",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    },
+    {
+      "source": "데일리굿뉴스",
+      "article_count": 1,
+      "average_score": 0.0,
+      "duplicate_count": 0
+    }
+  ],
+  "reporters": [],
+  "trends": {
+    "부동산": 54,
+    "반도체": 9,
+    "v.daum.net": 8,
+    "규제지역": 8,
+    "조선일보": 7,
+    "연합뉴스": 7,
+    "[부동산": 7,
+    "‘부동산": 5,
+    "투자": 5,
+    "규제": 5,
+    "집값": 5,
+    "머니투데이": 4,
+    "오세훈": 4,
+    "시장": 4,
+    "광주": 4,
+    "‘들썩’": 4,
+    "정책": 4,
+    "규제’": 3,
+    "한국경제": 3,
+    "이데일리": 3,
+    "기대": 3,
+    "뉴스1": 3,
+    "불법행위": 3,
+    "네이트": 3,
+    "삼전닉스": 3,
+    "[사설]": 3,
+    "서울신문": 3,
+    "추가": 3,
+    "아시아투데이": 3,
+    "블로터": 3
+  }
+}
