@@ -1,4 +1,6 @@
+import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,3 +11,6 @@ PUBLIC_DIR = BASE_DIR / "public"
 TEMPLATE_DIR = BASE_DIR / "templates"
 PROMPT_DIR = BASE_DIR / "prompts"
 OUTPUT_DIR = PUBLIC_DIR / "cards"
+
+# 추가
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
