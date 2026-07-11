@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block styles %}
+
+<link
+    rel="stylesheet"
+    href="{{ asset_path }}/css/insight.css"
+>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <img
+        class="bg"
+        src="{{ asset_path }}/images/insight.png"
+        alt=""
+    >
+
+    <div class="overlay"></div>
+
+    <header class="header">
+
+        <div>
+
+            <img
+                src="{{ asset_path }}/icons/APDaily.svg"
+                class="logo"
+                alt=""
+            >
+
+            <div class="header-subtitle">
+
+                {{ today }}
+
+            </div>
+
+        </div>
+
+        <div class="page">
+
+            {{ "%02d"|format(page) }}
+            /
+            {{ "%02d"|format(total) }}
+
+        </div>
+
+    </header>
+
+    <main class="content">
+
+        <div class="eyebrow">
+
+            💡 TODAY'S INSIGHT
+
+        </div>
+
+        <div class="quote">
+
+            {{ insight.summary }}
+
+        </div>
+
+        <div class="insight-divider"></div>
+
+        <div class="dustie">
+
+            <div class="dustie-header">
+
+                <img
+                    src="{{ asset_path }}/images/dustie-person.png"
+                    class="dustie-avatar"
+                    alt=""
+                >
+
+                <div>
+
+                    <div class="dustie-title">
+
+                        AI Editor's Note
+
+                    </div>
+
+                    <div class="dustie-author">
+
+                        by Dustie 🤖 
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="dustie-reason">
+
+                {{ insight.reason }}
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="footer">
+
+        <div class="footer-divider"></div>
+
+        <div class="footer-content">
+
+            <div class="footer-left">
+
+                <img
+                    src="{{ asset_path }}/icons/logo_white.svg"
+                    class="footer-logo"
+                    alt=""
+                >
+
+                <div class="footer-powered">
+
+                    Powered by <strong>Dustie</strong>
+
+                </div>
+
+            </div>
+
+            <div class="footer-right">
+
+                Copyright © <strong>AssetPicker</strong>
+                · Built with DustyDraft®
+
+            </div>
+
+        </div>
+
+    </footer>
+
+</div>
+
+{% endblock %}

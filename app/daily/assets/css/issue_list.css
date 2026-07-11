@@ -1,0 +1,197 @@
+.card{
+
+    position:relative;
+
+    width:1080px;
+    height:1350px;
+
+    overflow:hidden;
+
+    color:white;
+
+}
+
+/* ---------- Background ---------- */
+
+.bg{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:rgba(5,12,25,.60);
+
+}
+
+/* ---------- Header ---------- */
+
+.header{
+
+    position:absolute;
+
+    top:56px;
+    left:80px;
+    right:80px;
+
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    z-index:10;
+
+}
+
+.logo{
+
+    height:42px;
+
+}
+
+.page{
+    color:#111;
+    font-size:28px;
+    font-weight:700;
+}
+
+/* ---------- Main ---------- */
+
+.content{
+
+    position:absolute;
+
+    top:48%;
+
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    width:860px;
+
+    text-align:center;
+
+    z-index:10;
+
+}
+
+.eyebrow{
+
+    color:#D4AF37;
+
+    font-size:30px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    margin-bottom:48px;
+
+}
+
+/* ---------- List ---------- */
+
+.list{
+
+    background:none;
+
+    border:none;
+
+    backdrop-filter:none;
+
+    width:820px;
+
+}
+
+.item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:28px;
+
+    padding:34px 42px;
+
+}
+
+.number{
+
+    color:#D4AF37;
+
+    font-size:46px;
+
+    font-weight:800;
+
+}
+
+.title{
+
+    color:#2F2F2F;
+
+    font-size:32px;
+
+    font-weight:700;
+
+    line-height:1.5;
+
+}
+
+.divider{
+
+    height:1px;
+
+    margin:0 40px;
+
+    background:rgba(255,255,255,.10);
+
+}
+
+/* ---------- Footer ---------- */
+
+.footer{
+
+    position:absolute;
+
+    left:72px;
+    right:72px;
+    bottom:60px;
+
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    z-index:10;
+
+}
+
+.footer-logo{
+
+    height:42px;
+
+}
+
+.brand{
+
+    color:#D4AF37;
+
+    font-size:28px;
+
+    font-weight:700;
+
+}

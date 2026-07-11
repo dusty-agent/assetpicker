@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block styles %}
+
+<link
+    rel="stylesheet"
+    href="{{ asset_path }}/css/cover.css"
+>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <img
+        class="cover-bg"
+        src="{{ asset_path }}/images/cover.png"
+        alt=""
+    >
+
+    <div class="cover-overlay"></div>
+
+    <header class="header">
+
+        <div class="header-brand">
+
+            <img
+                src="{{ asset_path }}/icons/APDaily.svg"
+                class="header-logo"
+                alt=""
+            >
+
+            <div class="header-subtitle">
+
+                {{ today }}
+
+            </div>
+
+        </div>
+
+        <div class="header-page">
+
+            {{ page }} / {{ total }}
+
+        </div>
+
+    </header>
+
+    <main class="cover-main">
+
+        <div class="cover-label">
+
+            AP Daily
+
+        </div>
+
+        <h1 class="cover-title">
+
+            오늘의<br>
+            부동산 이슈
+
+        </h1>
+
+        <div class="cover-date">
+
+            {{ today }}
+
+        </div>
+
+    </main>
+
+    <div class="cover-description">
+
+        <div>
+
+            AI Editor Dustie가
+
+        </div>
+
+        <div>
+
+            매일 아침 <br>
+            오늘의 핵심 부동산 뉴스를 전해드립니다.
+
+        </div>
+
+    </div>
+
+    <footer class="footer">
+
+        <div class="footer-divider"></div>
+    
+        <div class="footer-content">
+    
+            <div class="footer-left">
+    
+                <img
+                    src="{{ asset_path }}/icons/logo_white.svg"
+                    class="footer-logo"
+                    alt=""
+                >
+    
+                <div class="footer-powered">
+    
+                    Powered by <strong>Dustie</strong>
+    
+                </div>
+    
+            </div>
+    
+            <div class="footer-right">
+    
+                Copyright © <strong>AssetPicker</strong>
+                · Built with DustyDraft®
+    
+            </div>
+    
+        </div>
+    
+    </footer>
+
+</div>
+
+{% endblock %}
