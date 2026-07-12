@@ -1,4 +1,10 @@
-from datetime import date
+from datetime import datetime
+from datetime import timezone
+from datetime import timedelta
+
+KST = timezone(timedelta(hours=9))
+
+today = datetime.now(KST)
 
 from app.collector.rss_collector import RSSCollector
 
@@ -24,8 +30,6 @@ pages = generator.generate(
 
 
 asset_path = ASSETS.resolve().as_uri()
-
-today = date.today()
 
 common = {
 
