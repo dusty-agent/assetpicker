@@ -176,4 +176,9 @@ render_page(
 
 print("✅ AP Daily Complete.")
 
+print("Rendering finished")
+print("Sending email...")
+
 send_daily_email()
+
+print("Email sent")
