@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
   schedule:
-    # 테스트: 한국시간 오전 7:30 (UTC 22:30)
-    - cron: "30 22 * * *"
+    # 테스트: 한국시간 오전 6:30 (UTC 21:30)
+    - cron: "30 21 * * *"
 
 jobs:
   build:
