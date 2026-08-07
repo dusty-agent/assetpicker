@@ -15,7 +15,7 @@
 
     <img
         class="bg"
-        src="{{ asset_path }}/images/introduction.png"
+        src="{{ asset_path }}/images/intro.png"
         alt=""
     >
 
@@ -31,9 +31,7 @@
 
         <div class="page">
 
-            {{ "%02d"|format(page) }}
-            /
-            {{ "%02d"|format(total) }}
+            {{ page }} / {{ total }}
 
         </div>
 
