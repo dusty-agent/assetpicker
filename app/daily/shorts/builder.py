@@ -1,6 +1,5 @@
 from pathlib import Path
 import subprocess
-import sys
 import os
 import shutil
 
@@ -9,7 +8,7 @@ import shutil
 # Root
 # ==================================================
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 
 
 # ==================================================
@@ -37,7 +36,7 @@ else:
 
 
 # ==================================================
-# Assets
+# Audio Assets
 # ==================================================
 
 DEFAULT_BGM = (
@@ -51,7 +50,7 @@ SHUTTER_SFX = (
     ROOT
     / "assets"
     / "sfx"
-    / "camera_shutter.mp3"
+    / "shutter.mp3"
 )
 
 PAGE_FLIP_SFX = (
@@ -74,11 +73,8 @@ WHOOSH_SFX = (
 # ==================================================
 
 BGM_VOLUME = 0.30
-
 SHUTTER_VOLUME = 0.14
-
 PAGE_FLIP_VOLUME = 0.18
-
 WHOOSH_VOLUME = 0.15
 
 
@@ -124,159 +120,19 @@ TOTAL_DURATION = sum(
 
 
 # ==================================================
-# Paths
-# ==================================================
-
-def get_paths(date: str):
-    """
-    Windows local
-    -------------
-
-    D:\\AP_Daily_Backup 안에서
-
-    YYYY-MM-DD_시간
-
-    형식의 백업 폴더 중
-    가장 최신 폴더를 자동으로 찾는다.
-
-    그 안의 쇼츠 PNG를 읽고,
-    완성된 MP4도 해당 백업의 shorts 폴더에 저장한다.
-
-
-    GitHub Actions / Linux
-    ----------------------
-
-    기존 output/daily/YYYY-MM-DD/shorts 사용
-    """
-
-    if os.name == "nt":
-
-        # ==================================================
-        # Windows Local
-        # ==================================================
-
-        backup_root = Path(
-            r"D:\AP_Daily_Backup"
-        )
-
-        if not backup_root.exists():
-
-            raise FileNotFoundError(
-                "AP Daily 백업 폴더를 찾을 수 없습니다.\n"
-                f"Expected: {backup_root}"
-            )
-
-
-        # --------------------------------------------------
-        # 해당 날짜의 백업 폴더 검색
-        #
-        # 예:
-        # 2026-08-08_210530
-        # 2026-08-08_213012
-        # --------------------------------------------------
-
-        candidates = sorted(
-            [
-                path
-                for path in backup_root.iterdir()
-                if (
-                    path.is_dir()
-                    and path.name.startswith(date)
-                )
-            ],
-            key=lambda path: path.name,
-            reverse=True,
-        )
-
-
-        if not candidates:
-
-            raise FileNotFoundError(
-                f"{date} 백업 폴더를 찾을 수 없습니다.\n"
-                f"Search root: {backup_root}"
-            )
-
-
-        # 가장 최근 백업
-        latest_backup = candidates[0]
-
-
-        print()
-        print(
-            "Latest backup:"
-        )
-
-        print(
-            latest_backup
-        )
-
-
-        # ==================================================
-        # Shorts source
-        # ==================================================
-
-        source_dir = (
-            latest_backup
-            / "output"
-            / "daily"
-            / date
-            / "shorts"
-        )
-
-
-        # ==================================================
-        # Final MP4
-        #
-        # 같은 백업 폴더 안에 저장
-        # ==================================================
-
-        output_dir = (
-            latest_backup
-            / "shorts"
-        )
-
-
-    else:
-
-        # ==================================================
-        # GitHub Actions / Linux
-        # ==================================================
-
-        source_dir = (
-            ROOT
-            / "output"
-            / "daily"
-            / date
-            / "shorts"
-        )
-
-
-        output_dir = (
-            ROOT
-            / "output"
-            / "daily"
-            / date
-        )
-
-
-    return (
-        source_dir,
-        output_dir,
-    )
-
-# ==================================================
 # Helpers
 # ==================================================
 
 def run(cmd):
 
     print()
+
     print(
         ">",
         " ".join(
             str(x)
             for x in cmd
-        ),
+        )
     )
 
     subprocess.run(
@@ -302,7 +158,47 @@ def require_ffmpeg():
 
 
 # ==================================================
-# Slide → Video Clip
+# Validate Shorts PNG
+# ==================================================
+
+def validate_slides(
+    source_dir: Path,
+):
+
+    if not source_dir.exists():
+
+        raise FileNotFoundError(
+            "쇼츠 이미지 폴더를 찾을 수 없습니다.\n"
+            f"Expected: {source_dir}"
+        )
+
+    missing = []
+
+    for filename in SLIDES:
+
+        path = (
+            source_dir
+            / filename
+        )
+
+        if not path.exists():
+
+            missing.append(
+                filename
+            )
+
+    if missing:
+
+        raise FileNotFoundError(
+            "쇼츠 이미지가 부족합니다.\n"
+            + "\n".join(
+                missing
+            )
+        )
+
+
+# ==================================================
+# PNG → Clip
 # ==================================================
 
 def build_slide_clip(
@@ -311,17 +207,16 @@ def build_slide_clip(
     duration: float,
     output_path: Path,
 ):
+
     """
-    완성된 1080x1920 Shorts PNG를
-    그대로 영상 클립으로 변환한다.
+    1080 x 1920으로 완성된 쇼츠 PNG를
+    해당 길이의 MP4 클립으로 만든다.
 
     Issue 1~5
-    ----------
-    fade 없음
+        fade 없음
 
     Cover / Introduction / Insight / Ending
-    ----------------------------------------
-    fade in / out 적용
+        짧은 fade in/out
     """
 
     fade_duration = 0.30
@@ -335,24 +230,20 @@ def build_slide_clip(
         "issue_"
     )
 
-    filters = []
+    filters = [
+
+        (
+            f"scale="
+            f"{WIDTH}:"
+            f"{HEIGHT}:"
+            f"flags=lanczos"
+        )
+    ]
 
 
-    # ------------------------------------------
-    # Resolution
-    # ------------------------------------------
-
-    filters.append(
-        f"scale="
-        f"{WIDTH}:"
-        f"{HEIGHT}:"
-        f"flags=lanczos"
-    )
-
-
-    # ------------------------------------------
+    # --------------------------------------------------
     # Fade
-    # ------------------------------------------
+    # --------------------------------------------------
 
     if not is_issue:
 
@@ -371,18 +262,9 @@ def build_slide_clip(
         )
 
 
-    # ------------------------------------------
-    # FPS
-    # ------------------------------------------
-
     filters.append(
         f"fps={FPS}"
     )
-
-
-    # ------------------------------------------
-    # Pixel format
-    # ------------------------------------------
 
     filters.append(
         "format=yuv420p"
@@ -439,7 +321,7 @@ def build_slide_clip(
 # ==================================================
 
 def make_concat_file(
-    clips,
+    clips: list[Path],
     concat_file: Path,
 ):
 
@@ -465,7 +347,7 @@ def make_concat_file(
 
 
 def concat_clips(
-    clips,
+    clips: list[Path],
     output_path: Path,
 ):
 
@@ -522,22 +404,24 @@ def build_audio(
     video_path: Path,
     output_path: Path,
 ):
+
     """
     Timeline
 
     00 Cover
     04 Introduction
 
-    08 Issue 1  → shutter
-    13 Issue 2  → page flip
-    18 Issue 3  → shutter
-    23 Issue 4  → page flip
-    28 Issue 5  → shutter
+    08 Issue 1  -> shutter
+    13 Issue 2  -> page flip
+    18 Issue 3  -> shutter
+    23 Issue 4  -> page flip
+    28 Issue 5  -> shutter
 
-    33 Insight  → whoosh
+    33 Insight  -> whoosh
+
     38 Ending
 
-    Total: 42 sec
+    Total 42 sec
     """
 
     if not DEFAULT_BGM.exists():
@@ -576,7 +460,7 @@ def build_audio(
     # BGM
     # ==================================================
 
-    bgm_fade_out_start = max(
+    fade_out_start = max(
         TOTAL_DURATION - 1.5,
         0,
     )
@@ -595,7 +479,7 @@ def build_audio(
 
         "afade="
         "t=out:"
-        f"st={bgm_fade_out_start}:"
+        f"st={fade_out_start}:"
         "d=1.5"
 
         "[bgm]"
@@ -662,7 +546,7 @@ def build_audio(
 
 
     # ==================================================
-    # Page flip
+    # Page Flip
     # Issue 2 / 4
     # ==================================================
 
@@ -752,7 +636,7 @@ def build_audio(
 
 
     # ==================================================
-    # Audio Mix
+    # Mix
     # ==================================================
 
     filter_parts.append(
@@ -809,96 +693,58 @@ def build_audio(
 
 
 # ==================================================
-# Main
+# Public Builder
 # ==================================================
 
-def main():
+def build_daily_short(
+    *,
+    date: str,
+    source_dir: Path,
+    output_path: Path,
+) -> Path:
+
+    """
+    AP Daily Shorts 영상 생성.
+
+    Parameters
+    ----------
+
+    date
+        YYYY-MM-DD
+
+    source_dir
+        완성된 1080x1920 쇼츠 PNG 9장 폴더
+
+    output_path
+        최종 MP4 저장 위치
+    """
 
     require_ffmpeg()
 
-
-    # ==================================================
-    # Date
-    # ==================================================
-
-    if len(sys.argv) < 2:
-
-        print()
-
-        print(
-            "사용법:"
-        )
-
-        print(
-            "python "
-            "scripts\\build_daily_short.py "
-            "2026-08-08"
-        )
-
-        print()
-
-        sys.exit(1)
-
-
-    date = sys.argv[1]
-
-
-    # ==================================================
-    # Resolve paths
-    # ==================================================
-
-    source_dir, output_dir = (
-        get_paths(date)
+    validate_slides(
+        source_dir
     )
 
 
-    # ==================================================
-    # Source check
-    # ==================================================
-
-    if not source_dir.exists():
-
-        raise FileNotFoundError(
-            "쇼츠 이미지 폴더를 찾을 수 없습니다.\n"
-            f"Expected: {source_dir}"
-        )
-
-
-    for filename in SLIDES:
-
-        image_path = (
-            source_dir
-            / filename
-        )
-
-        if not image_path.exists():
-
-            raise FileNotFoundError(
-                "쇼츠 이미지가 없습니다.\n"
-                f"Expected: {image_path}"
-            )
-
-
-    # ==================================================
-    # Output
-    # ==================================================
-
-    output_dir.mkdir(
+    output_path.parent.mkdir(
         parents=True,
         exist_ok=True,
     )
 
 
-    # ==================================================
-    # Temp
-    # ==================================================
-
     temp_dir = (
-        ROOT
-        / "output"
+        output_path.parent
         / "_short_temp"
-        / date
     )
+
+
+    # 혹시 이전 실행이 중단되어
+    # temp가 남았다면 제거
+    if temp_dir.exists():
+
+        shutil.rmtree(
+            temp_dir
+        )
 
 
     temp_dir.mkdir(
@@ -910,59 +756,35 @@ def main():
     clips = []
 
 
-    # ==================================================
-    # Info
-    # ==================================================
-
     print()
     print(
         "===================================="
     )
-
     print(
         "AP Daily Shorts Builder"
     )
-
     print(
         "===================================="
     )
 
-    print()
-
     print(
-        "DATE:",
-        date
+        f"Date       : {date}"
     )
 
     print(
-        "SOURCE:"
+        f"Source     : {source_dir}"
     )
 
     print(
-        source_dir
-    )
-
-    print()
-
-    print(
-        "OUTPUT:"
+        f"Output     : {output_path}"
     )
 
     print(
-        output_dir
-    )
-
-    print()
-
-    print(
-        "RESOLUTION:",
-        f"{WIDTH}x{HEIGHT}"
+        f"Resolution : {WIDTH}x{HEIGHT}"
     )
 
     print(
-        "DURATION:",
-        TOTAL_DURATION,
-        "seconds"
+        f"Duration   : {TOTAL_DURATION}s"
     )
 
     print()
@@ -971,7 +793,7 @@ def main():
     try:
 
         # ==================================================
-        # 1. Build slide clips
+        # 1. PNG → Clips
         # ==================================================
 
         for index, filename in enumerate(
@@ -984,13 +806,11 @@ def main():
                 / filename
             )
 
-
             duration = (
                 DURATIONS[
                     filename
                 ]
             )
-
 
             clip_path = (
                 temp_dir
@@ -1001,18 +821,14 @@ def main():
             print(
                 f"[{index}/{len(SLIDES)}] "
                 f"{filename} "
-                f"/ {duration:.1f}s"
+                f"{duration:.1f}s"
             )
 
 
             build_slide_clip(
-
                 image_path=image_path,
-
                 filename=filename,
-
                 duration=duration,
-
                 output_path=clip_path,
             )
 
@@ -1023,7 +839,7 @@ def main():
 
 
         # ==================================================
-        # 2. Silent
+        # 2. Silent Video
         # ==================================================
 
         silent_output = (
@@ -1036,92 +852,49 @@ def main():
 
 
         concat_clips(
-
             clips=clips,
-
             output_path=silent_output,
         )
 
 
         # ==================================================
-        # 3. Final video
+        # 3. Audio
         # ==================================================
-
-        final_output = (
-            output_dir
-            / (
-                f"ap_daily_short_"
-                f"{date}.mp4"
-            )
-        )
-
 
         build_audio(
-
             video_path=silent_output,
-
-            output_path=final_output,
+            output_path=output_path,
         )
 
-
-        # ==================================================
-        # Complete
-        # ==================================================
 
         print()
         print(
             "===================================="
         )
-
         print(
             "✅ AP Daily Short Complete"
         )
-
         print(
             "===================================="
         )
-
-        print()
-
         print(
-            final_output
+            output_path
         )
-
         print()
+
+
+        return output_path
 
 
     finally:
 
         # ==================================================
-        # Temp cleanup
+        # Cleanup
         # ==================================================
 
         if temp_dir.exists():
 
-            for file in (
-                temp_dir.iterdir()
-            ):
-
-                if file.is_file():
-
-                    file.unlink(
-                        missing_ok=True
-                    )
-
-
-            try:
-
-                temp_dir.rmdir()
-
-            except OSError:
-
-                pass
-
-
-# ==================================================
-# Entry
-# ==================================================
-
-if __name__ == "__main__":
-
-    main()
+            shutil.rmtree(
+                temp_dir,
+                ignore_errors=True,
+            )

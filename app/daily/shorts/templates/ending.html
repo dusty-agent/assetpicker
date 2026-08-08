@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block style %}
+
+/* =========================================
+   ENDING BACKGROUND
+========================================= */
+
+.page {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(4, 10, 18, 0.30) 0%,
+            rgba(4, 10, 18, 0.40) 45%,
+            rgba(4, 10, 18, 0.62) 100%
+        ),
+        url("{{ asset_path }}/images/ending.png");
+
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+
+/* =========================================
+   ENDING
+========================================= */
+
+.ending-wrap {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    padding-top: 120px;
+}
+
+
+/* -----------------------------------------
+   Dustie
+----------------------------------------- */
+
+.ending-dustie {
+    width: 110px;
+    height: 110px;
+
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+
+    opacity: 0.94;
+}
+
+
+.ending-dustie-title {
+    margin-top: 18px;
+
+    font-size: 28px;
+    font-weight: 500;
+
+    color: rgba(
+        255,
+        255,
+        255,
+        0.72
+    );
+}
+
+
+/* -----------------------------------------
+   Eyebrow
+----------------------------------------- */
+
+.ending-eyebrow {
+    margin-top: 54px;
+
+    font-size: 32px;
+    line-height: 1.35;
+
+    font-weight: 750;
+
+    letter-spacing: 0.6px;
+
+    color: #d4af37;
+}
+
+
+/* -----------------------------------------
+   Main message
+----------------------------------------- */
+
+.ending-title {
+    margin:
+        54px
+        auto
+        0;
+
+    width: 100%;
+    max-width: 880px;
+
+    text-align: center;
+
+    font-size: 92px;
+    line-height: 1.18;
+
+    font-weight: 800;
+
+    letter-spacing: -4px;
+
+    word-break: keep-all;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 3px 16px
+        rgba(0, 0, 0, 0.32);
+}
+
+
+/* -----------------------------------------
+   Divider
+----------------------------------------- */
+
+.ending-divider {
+    width: 110px;
+    height: 4px;
+
+    margin-top: 54px;
+
+    border-radius: 999px;
+
+    background: #d4af37;
+}
+
+
+/* -----------------------------------------
+   Update text
+----------------------------------------- */
+
+.ending-update {
+    margin-top: 48px;
+
+    font-size: 38px;
+    font-weight: 500;
+
+    letter-spacing: -0.8px;
+
+    color: rgba(
+        255,
+        255,
+        255,
+        0.82
+    );
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="ending-wrap">
+
+    <img
+        src="{{ asset_path }}/dustie.svg"
+        class="ending-dustie"
+        alt="AI Editor Dustie"
+    >
+
+
+    <div class="ending-dustie-title">
+        AI Editor Dustie
+    </div>
+
+
+    <div class="ending-eyebrow">
+        TODAY'S BRIEF COMPLETE<br>
+        SEE YOU TOMORROW
+    </div>
+
+
+    <h1 class="ending-title">
+        내일도 가장 빠른<br>
+        부동산 브리핑으로<br>
+        찾아오겠습니다.
+    </h1>
+
+
+    <div class="ending-divider"></div>
+
+
+    <div class="ending-update">
+        매일 아침 업데이트
+    </div>
+
+</div>
+
+{% endblock %}

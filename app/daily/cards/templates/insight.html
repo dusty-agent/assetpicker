@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+
+{% block styles %}
+
+
+/* =========================================
+   INSIGHT BACKGROUND
+========================================= */
+
+.insight-bg {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #09131f 0%,
+            #07111b 48%,
+            #050b12 100%
+        );
+}
+
+
+.insight-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            rgba(
+                26,
+                42,
+                61,
+                0.42
+            ) 0%,
+            rgba(
+                5,
+                11,
+                18,
+                0
+            ) 65%
+        );
+}
+
+/* =========================================
+    TEXT SHADOW
+========================================= */
+
+.content {
+ text-shadow:
+     0 2px 8px rgba(0, 0, 0, 0.38),
+     0 1px 2px rgba(0, 0, 0, 0.28);
+}
+
+/* =========================================
+   MAIN
+========================================= */
+
+.insight-content {
+    position: absolute;
+
+    top: 48%;
+    left: 50%;
+
+    width: 860px;
+
+    transform:
+        translate(-50%, -50%);
+
+    text-align: center;
+
+    z-index: 10;
+}
+
+
+/* =========================================
+   EYEBROW
+========================================= */
+
+.insight-eyebrow {
+    margin-bottom: 48px;
+
+    color: #d4af37;
+
+    font-size: 28px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================
+   QUOTE
+========================================= */
+
+.quote {
+    width: 900px;
+
+    margin:
+        0
+        auto;
+
+    font-size: 48px;
+    line-height: 1.35;
+
+    font-weight: 800;
+
+    letter-spacing: -2px;
+
+    word-break: keep-all;
+
+    color: #ffffff;
+}
+
+
+.insight-divider {
+    width: 140px;
+    height: 2px;
+
+    margin:
+        44px
+        auto;
+
+    background:
+        rgba(
+            212,
+            175,
+            55,
+            0.75
+        );
+}
+
+
+/* =========================================
+   DUSTIE
+========================================= */
+
+.dustie-box {
+    width: 760px;
+
+    margin:
+        0
+        auto;
+
+    padding:
+        30px
+        36px;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
+
+    border-radius: 22px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
+}
+
+
+.dustie-header {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 18px;
+
+    margin-bottom: 22px;
+}
+
+
+.dustie-avatar {
+    width: 58px;
+    height: 58px;
+
+    object-fit: contain;
+
+    filter:
+        brightness(0)
+        invert(1);
+
+    opacity: 0.92;
+}
+
+
+.dustie-title {
+    font-size: 24px;
+    font-weight: 700;
+
+    color: #d4af37;
+}
+
+
+.dustie-author {
+    margin-top: 4px;
+
+    font-size: 15px;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.65
+        );
+
+    letter-spacing: 0.05em;
+}
+
+
+.dustie-reason {
+    font-size: 22px;
+    line-height: 1.7;
+
+    text-align: center;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.90
+        );
+}
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="insight-bg"></div>
+
+<div class="insight-overlay"></div>
+
+
+<main class="insight-content">
+
+
+    <div class="insight-eyebrow">
+        💡 TODAY'S INSIGHT
+    </div>
+
+
+    <div class="quote">
+        {{ insight.summary }}
+    </div>
+
+
+    <div class="insight-divider"></div>
+
+
+    <div class="dustie-box">
+
+
+        <div class="dustie-header">
+
+
+            <img
+                src="{{ asset_path }}/dustie.svg"
+                class="dustie-avatar"
+                alt="Dustie"
+            >
+
+
+            <div>
+
+                <div class="dustie-title">
+                    AI Editor's Note
+                </div>
+
+                <div class="dustie-author">
+                    by Dustie 🤖
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="dustie-reason">
+            {{ insight.reason }}
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+{% endblock %}

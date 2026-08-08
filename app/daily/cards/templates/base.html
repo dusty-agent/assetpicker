@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AP Daily</title>
+
+
+    <style>
+
+        /* =========================================
+           FONT
+        ========================================= */
+
+        @font-face {
+            font-family: "Pretendard";
+
+            src:
+                url("{{ asset_path }}/fonts/PretendardVariable.ttf")
+                format("truetype");
+
+            font-weight: 100 900;
+            font-style: normal;
+        }
+
+
+        /* =========================================
+           RESET
+        ========================================= */
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+
+            width: 1080px;
+            height: 1350px;
+        }
+
+
+        * {
+            box-sizing: border-box;
+
+            font-family:
+                "Pretendard",
+                "Apple SD Gothic Neo",
+                "Malgun Gothic",
+                sans-serif;
+        }
+
+
+        body {
+            background: #111111;
+        }
+
+
+        /* =========================================
+           CARD
+        ========================================= */
+
+        .card {
+            position: relative;
+
+            width: 1080px;
+            height: 1350px;
+
+            overflow: hidden;
+
+            color: #ffffff;
+        }
+
+
+        /* =========================================
+           COMMON BACKGROUND
+        ========================================= */
+
+        .bg {
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+
+        .overlay {
+            position: absolute;
+
+            inset: 0;
+        }
+
+
+        /* =========================================
+           HEADER
+           Cover 기준
+        ========================================= */
+
+        .header {
+            position: absolute;
+
+            top: 56px;
+            left: 80px;
+            right: 80px;
+
+            display: flex;
+
+            justify-content: space-between;
+            align-items: flex-start;
+
+            z-index: 100;
+        }
+
+
+        .header-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+
+        .header-logo {
+            height: 66px;
+            width: auto;
+
+            display: block;
+
+            opacity: 0.7;
+        }
+
+
+        .header-subtitle {
+            margin-top: 8px;
+
+            font-size: 18px;
+            font-weight: 500;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.85
+                );
+        }
+
+
+        .header-page {
+            font-size: 28px;
+            font-weight: 700;
+
+            color: #ffffff;
+        }
+
+
+        /* =========================================
+           FOOTER
+           Cover 기준
+        ========================================= */
+
+        .footer {
+            position: absolute;
+
+            left: 56px;
+            right: 56px;
+
+            bottom: 47px;
+
+            z-index: 100;
+        }
+
+
+        .footer-divider {
+            height: 1px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.20
+                );
+        }
+
+
+        .footer-content {
+            margin-top: 22px;
+
+            display: flex;
+
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+
+        .footer-left {
+            display: flex;
+
+            align-items: flex-end;
+
+            gap: 18px;
+        }
+
+
+        .footer-logo {
+            height: 34px;
+            width: auto;
+
+            opacity: 0.7;
+        }
+
+
+        .footer-powered {
+            font-size: 15px;
+            font-weight: 500;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.80
+                );
+        }
+
+
+        .footer-powered strong {
+            color: #d4af37;
+
+            font-weight: 700;
+        }
+
+
+        .footer-right {
+            font-size: 15px;
+            font-weight: 500;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.80
+                );
+        }
+
+
+        .footer-right strong {
+            color: #d4af37;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+           COMMON
+        ========================================= */
+
+        .gold {
+            color: #d4af37;
+        }
+
+
+        /* =========================================
+           PAGE SPECIFIC STYLE
+        ========================================= */
+
+        {% block styles %}
+        {% endblock %}
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="card">
+
+
+        <!-- ======================================
+             COMMON HEADER
+        ======================================= -->
+
+        <header class="header">
+
+            <div class="header-brand">
+
+                <img
+                    src="{{ asset_path }}/icons/APDaily.svg"
+                    class="header-logo"
+                    alt="AP Daily"
+                >
+
+                <div class="header-subtitle">
+                    {{ today }}
+                </div>
+
+            </div>
+
+
+            <div class="header-page">
+                {{ page }} / {{ total }}
+            </div>
+
+        </header>
+
+
+        <!-- ======================================
+             PAGE CONTENT
+        ======================================= -->
+
+        {% block content %}
+        {% endblock %}
+
+
+        <!-- ======================================
+             COMMON FOOTER
+        ======================================= -->
+
+        <footer class="footer">
+
+            <div class="footer-divider"></div>
+
+
+            <div class="footer-content">
+
+                <div class="footer-left">
+
+                    <img
+                        src="{{ asset_path }}/icons/logo_white.svg"
+                        class="footer-logo"
+                        alt="AssetPicker"
+                    >
+
+                    <div class="footer-powered">
+                        Powered by <strong>Dustie</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="footer-right">
+                    Copyright © <strong>AssetPicker</strong>
+                    · Built with DustyDraft®
+                </div>
+
+            </div>
+
+        </footer>
+
+
+    </div>
+
+</body>
+
+</html>

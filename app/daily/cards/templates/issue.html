@@ -1,0 +1,386 @@
+{% extends "base.html" %}
+
+{% block styles %}
+
+
+/* =========================================
+   ISSUE BACKGROUND
+========================================= */
+
+.issue-bg {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.issue-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(
+            5,
+            12,
+            25,
+            0.50
+        );
+}
+
+/* =========================================
+   BACKGROUND
+========================================= */
+
+.overlay {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(5, 12, 25, 0.28) 0%,
+            rgba(5, 12, 25, 0.42) 45%,
+            rgba(5, 12, 25, 0.62) 100%
+        );
+}
+
+/* =========================================
+    TEXT SHADOW
+========================================= */
+
+.content {
+ text-shadow:
+     0 2px 8px rgba(0, 0, 0, 0.38),
+     0 1px 2px rgba(0, 0, 0, 0.28);
+}
+
+/* =========================================
+   ISSUE CONTENT
+========================================= */
+
+.issue-content {
+    position: absolute;
+
+    top: 49%;
+    left: 50%;
+
+    width: 860px;
+
+    transform:
+        translate(-50%, -50%);
+
+    text-align: center;
+
+    z-index: 10;
+}
+
+
+/* =========================================
+   EYEBROW
+========================================= */
+
+.eyebrow {
+    color: #d4af37;
+
+    font-size: 28px;
+    font-weight: 750;
+
+    letter-spacing: 1px;
+}
+
+
+.issue-number {
+    margin-top: 14px;
+
+    font-size: 18px;
+    font-weight: 500;
+
+    letter-spacing: 1px;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.55
+        );
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.issue-title {
+    width: 100%;
+
+    margin:
+        42px
+        auto
+        0;
+
+    font-size: 64px;
+    line-height: 1.20;
+
+    font-weight: 800;
+
+    letter-spacing: -2px;
+
+    word-break: keep-all;
+
+    color: #ffffff;
+}
+
+
+.issue-title.long {
+    font-size: 56px;
+}
+
+
+/* =========================================
+   DIVIDER
+========================================= */
+
+.issue-divider {
+    width: 90px;
+    height: 3px;
+
+    margin:
+        36px
+        auto
+        0;
+
+    border-radius: 999px;
+
+    background: #d4af37;
+}
+
+
+/* =========================================
+   TAGS
+========================================= */
+
+.tags {
+    margin-top: 32px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+}
+
+
+.tags span {
+    padding:
+        10px
+        20px;
+
+    border:
+        1px solid
+        rgba(
+            212,
+            175,
+            55,
+            0.50
+        );
+
+    border-radius: 999px;
+
+    background:
+        rgba(
+            212,
+            175,
+            55,
+            0.08
+        );
+
+    font-size: 21px;
+    font-weight: 650;
+
+    color: #d4af37;
+}
+
+
+/* =========================================
+   SUMMARY
+========================================= */
+
+.issue-summary {
+    width: 720px;
+
+    margin:
+        42px
+        auto
+        0;
+
+    text-align: center;
+
+    font-size: 34px;
+    line-height: 1.62;
+
+    font-weight: 500;
+
+    letter-spacing: -1px;
+
+    word-break: keep-all;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.94
+        );
+}
+
+
+/* =========================================
+   SOURCES
+========================================= */
+
+.source {
+    width: 720px;
+
+    margin:
+        34px
+        auto
+        0;
+
+    padding:
+        15px
+        20px;
+
+    border:
+        1px solid
+        rgba(
+            212,
+            175,
+            55,
+            0.22
+        );
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    font-size: 16px;
+    line-height: 1.5;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.58
+        );
+}
+
+
+.source-label {
+    margin-right: 7px;
+
+    color: #d4af37;
+
+    font-weight: 700;
+}
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<img
+    class="issue-bg"
+    src="{{ asset_path }}/images/cover.png"
+    alt=""
+>
+
+<div class="issue-overlay"></div>
+
+
+<main class="issue-content">
+
+
+    <div class="eyebrow">
+        ★ TODAY'S HOT ISSUE
+    </div>
+
+
+    <div class="issue-number">
+        ISSUE {{ issue_number }}
+    </div>
+
+
+    <h1
+        class="
+            issue-title
+            {% if card.title|length > 16 %}
+                long
+            {% endif %}
+        "
+    >
+        {{ card.title }}
+    </h1>
+
+
+    <div class="issue-divider"></div>
+
+
+    {% if card.tags %}
+
+    <div class="tags">
+
+        {% for tag in card.tags %}
+
+        <span>
+            {{ tag }}
+        </span>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="issue-summary">
+        {{ card.summary }}
+    </div>
+
+
+    {% if card.sources %}
+
+    <div class="source">
+
+        <span class="source-label">
+            Sources
+        </span>
+
+        {% for source in card.sources %}
+
+            {{ source }}
+
+            {% if not loop.last %}
+                ·
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+
+</main>
+
+
+{% endblock %}

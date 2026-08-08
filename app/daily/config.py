@@ -1,21 +1,29 @@
 from pathlib import Path
-from datetime import date
+from datetime import datetime, timezone, timedelta
 import os
 
 from dotenv import load_dotenv
 
+
 load_dotenv()
+
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 ROOT = Path(__file__).parent
 
 ASSETS = ROOT / "assets"
-TEMPLATES = ROOT / "templates"
 
-TODAY = date.today().isoformat()
+CARDS_TEMPLATES = ROOT / "cards" / "templates"
+SHORTS_TEMPLATES = ROOT / "shorts" / "templates"
+
+
+KST = timezone(timedelta(hours=9))
+
+TODAY = datetime.now(KST).strftime("%Y-%m-%d")
 
 OUTPUT = Path("output/daily") / TODAY
+
 
 DEBUG = True
 

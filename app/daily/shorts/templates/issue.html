@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+
+{% block style %}
+
+/* =========================================
+   ISSUE BACKGROUND
+========================================= */
+
+.issue-bg {
+    position: fixed;
+
+    inset: 0;
+
+    width: 1080px;
+    height: 1920px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(5, 11, 18, 0.80) 0%,
+            rgba(5, 11, 18, 0.84) 48%,
+            rgba(5, 11, 18, 0.92) 100%
+        ),
+        url("{{ asset_path }}/images/cover.png");
+
+    background-size: cover;
+    background-position: 60% center;
+    background-repeat: no-repeat;
+
+    z-index: -1;
+}
+
+
+/* =========================================
+   ISSUE
+========================================= */
+
+.issue-wrap {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    padding-top: 105px;
+
+    z-index: 2;
+}
+
+
+/* HOT ISSUE */
+
+.eyebrow {
+    text-align: center;
+
+    font-size: 36px;
+    font-weight: 750;
+
+    letter-spacing: 0.4px;
+
+    color: #d4af37;
+}
+
+
+/* ISSUE 1 */
+
+.issue-number {
+    margin-top: 17px;
+
+    text-align: center;
+
+    font-size: 25px;
+    font-weight: 500;
+
+    letter-spacing: 1.2px;
+
+    color: rgba(
+        255,
+        255,
+        255,
+        0.52
+    );
+}
+
+
+/* 제목 */
+
+.issue-title {
+    margin: 48px auto 0;
+
+    width: 100%;
+    max-width: 860px;
+
+    text-align: center;
+
+    font-size: 100px;
+    line-height: 1.10;
+
+    font-weight: 800;
+
+    letter-spacing: -4px;
+
+    word-break: keep-all;
+
+    color: #ffffff;
+}
+
+
+/* 긴 제목 */
+
+.issue-title.long {
+    font-size: 82px;
+}
+
+
+/* Divider */
+
+.issue-divider {
+    width: 110px;
+    height: 4px;
+
+    margin: 46px auto 0;
+
+    border-radius: 999px;
+
+    background: #d4af37;
+}
+
+
+/* Tags */
+
+.tags {
+    margin-top: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 16px;
+
+    width: 100%;
+}
+
+
+.tags span {
+    padding: 14px 27px;
+
+    border:
+        1px solid
+        rgba(
+            212,
+            175,
+            55,
+            0.52
+        );
+
+    border-radius: 999px;
+
+    background:
+        rgba(
+            5,
+            11,
+            18,
+            0.50
+        );
+
+    font-size: 28px;
+    font-weight: 650;
+
+    color: #d4af37;
+}
+
+
+/* 본문 */
+
+.issue-summary {
+    margin: 58px auto 0;
+
+    width: 100%;
+    max-width: 860px;
+
+    text-align: center;
+
+    font-size: 52px;
+    line-height: 1.52;
+
+    font-weight: 430;
+
+    letter-spacing: -1.5px;
+
+    word-break: keep-all;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.96
+        );
+
+    text-shadow:
+        0 2px 10px
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
+}
+
+
+/* Sources */
+
+.source {
+    margin: 44px auto 0;
+
+    width: 100%;
+    max-width: 860px;
+
+    padding: 20px 25px;
+
+    border:
+        1px solid
+        rgba(
+            212,
+            175,
+            55,
+            0.25
+        );
+
+    border-radius: 14px;
+
+    background:
+        rgba(
+            5,
+            11,
+            18,
+            0.46
+        );
+
+    text-align: center;
+
+    font-size: 22px;
+    line-height: 1.5;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.62
+        );
+}
+
+
+.source-label {
+    margin-right: 10px;
+
+    font-weight: 700;
+
+    color: #d4af37;
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="issue-bg"></div>
+
+
+<div class="issue-wrap">
+
+    <div class="eyebrow">
+        ★ TODAY'S HOT ISSUE
+    </div>
+
+
+    <div class="issue-number">
+        ISSUE {{ issue_number }}
+    </div>
+
+
+    <h1
+        class="
+            issue-title
+
+            {% if card.title|length > 16 %}
+                long
+            {% endif %}
+        "
+    >
+        {{ card.title }}
+    </h1>
+
+
+    <div class="issue-divider"></div>
+
+
+    {% if card.tags %}
+
+    <div class="tags">
+
+        {% for tag in card.tags %}
+
+        <span>
+            {{ tag }}
+        </span>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="issue-summary">
+        {{ card.summary }}
+    </div>
+
+
+    {% if card.sources %}
+
+    <div class="source">
+
+        <span class="source-label">
+            Sources
+        </span>
+
+        {% for source in card.sources %}
+
+            {{ source }}
+
+            {% if not loop.last %}
+                ·
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

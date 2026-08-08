@@ -4,35 +4,83 @@ on:
   workflow_dispatch:
 
   schedule:
-    # 한국시간 오전 6:30 (UTC 21:30)
+    # 한국시간 오전 6:30 (UTC 전날 21:30)
     - cron: "30 21 * * *"
 
+
 jobs:
+
   build:
+
     runs-on: ubuntu-latest
 
     steps:
+
+      # ==========================================
+      # Checkout
+      # ==========================================
+
       - name: Checkout
         uses: actions/checkout@v4
+
+
+      # ==========================================
+      # Python
+      # ==========================================
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+
+      # ==========================================
+      # Python Dependencies
+      # ==========================================
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+
+      # ==========================================
+      # Playwright / Chromium
+      # ==========================================
+
       - name: Install Playwright
         run: |
           playwright install --with-deps chromium
+
+
+      # ==========================================
+      # FFmpeg
+      # ==========================================
 
       - name: Install FFmpeg
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
+
+      # ==========================================
+      # 날짜 추가
+      # ==========================================
+      
+      - name: Set KST date
+        run: |
+          echo "AP_DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)" >> $GITHUB_ENV
+
+
+      # ==========================================
+      # Run AP Daily
+      #
+      # Collect
+      # → Curate
+      # → Card News
+      # → Shorts Images
+      # → Shorts MP4
+      # → Email
+      # ==========================================
 
       - name: Run AP Daily
         env:
@@ -41,17 +89,27 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
           TO_EMAIL: ${{ secrets.TO_EMAIL }}
+
         run: |
           python -m app.daily.main
 
-      - name: Build AP Daily Short
-        run: |
-          DATE=$(date -d "9 hours" +%Y-%m-%d)
-          python scripts/build_daily_short.py "$DATE"
 
-      - name: Upload AP Daily Short
+      # ==========================================
+      # Upload Complete Daily Output
+      # ==========================================
+
+      - name: Upload AP Daily Output
         uses: actions/upload-artifact@v4
+
         with:
-          name: ap-daily-short
-          path: output/daily/*/ap_daily_short_*.mp4
-          retention-days: 7
+          name: ap-daily-${{ env.AP_DATE }}
+
+          path: |
+            output/daily/*/*.png
+            output/daily/*/shorts/*.png
+            output/daily/*/ap_daily_short_*.mp4
+            data/daily/*/*.json
+
+          retention-days: 30
+
+          if-no-files-found: warn

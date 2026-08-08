@@ -1,7 +1,7 @@
 from typing import Any
 
 from app.daily.models import NewsCard
-from app.daily.pipeline import DailyPipeline
+from app.daily.builder.cards_builder import DailyCardBuilder
 from app.daily.prompts import (
     SYSTEM_PROMPT,
     build_prompt,
@@ -15,7 +15,7 @@ class DailyGenerator:
 
         self.llm = LLMClient()
 
-        self.pipeline = DailyPipeline()
+        self.builder = DailyCardBuilder()
 
     def generate(
 
@@ -47,6 +47,6 @@ class DailyGenerator:
                 "LLM이 카드를 생성하지 않았습니다."
             )
 
-        return self.pipeline.build(
+        return self.builder.build(
             result,
         )

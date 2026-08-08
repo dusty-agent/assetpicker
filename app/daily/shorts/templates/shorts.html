@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+
+            width: 1080px;
+            height: 1920px;
+
+            overflow: hidden;
+
+            font-family:
+                "Pretendard",
+                "Noto Sans KR",
+                Arial,
+                sans-serif;
+
+            background:
+                #08101a;
+
+            color:
+                #ffffff;
+        }
+
+        .frame {
+            position: relative;
+
+            width: 1080px;
+            height: 1920px;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #0c1726 0%,
+                    #09121d 48%,
+                    #08101a 100%
+                );
+        }
+
+
+        /* ----------------------------------------
+           background atmosphere
+        ---------------------------------------- */
+
+        .glow {
+            position: absolute;
+
+            width: 900px;
+            height: 900px;
+
+            left: 90px;
+            top: 380px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(30, 56, 91, 0.35) 0%,
+                    rgba(13, 30, 50, 0.16) 45%,
+                    rgba(8, 16, 26, 0) 72%
+                );
+        }
+
+
+        /* ----------------------------------------
+           Header
+        ---------------------------------------- */
+
+        .header {
+            position: absolute;
+
+            top: 92px;
+            left: 78px;
+            right: 78px;
+
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 176px;
+            height: auto;
+
+            opacity: 0.94;
+        }
+
+        .date {
+            font-size: 25px;
+            font-weight: 400;
+
+            letter-spacing: -0.02em;
+
+            color:
+                rgba(255, 255, 255, 0.72);
+        }
+
+        .counter {
+            padding-top: 8px;
+
+            font-size: 28px;
+            font-weight: 700;
+
+            letter-spacing: 0.04em;
+
+            color:
+                rgba(255, 255, 255, 0.92);
+        }
+
+
+        /* ----------------------------------------
+           Main
+        ---------------------------------------- */
+
+        .main {
+            position: absolute;
+
+            top: 335px;
+            left: 96px;
+            right: 150px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            margin-bottom: 52px;
+
+            font-size: 27px;
+            font-weight: 800;
+
+            letter-spacing: 0.055em;
+
+            color: #e2b429;
+        }
+
+        .eyebrow-dot {
+            width: 12px;
+            height: 12px;
+
+            border-radius: 50%;
+
+            background: #e2b429;
+
+            box-shadow:
+                0 0 20px
+                rgba(226, 180, 41, 0.28);
+        }
+
+
+        /* ----------------------------------------
+           Headline
+        ---------------------------------------- */
+
+        .headline {
+            width: 100%;
+
+            margin: 0;
+
+            font-size: 68px;
+            line-height: 1.23;
+
+            font-weight: 800;
+
+            letter-spacing: -0.055em;
+
+            word-break: keep-all;
+
+            color: #ffffff;
+        }
+
+
+        /* ----------------------------------------
+           Keywords
+        ---------------------------------------- */
+
+        .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 13px;
+
+            margin-top: 42px;
+        }
+
+        .keyword {
+            padding:
+                11px 22px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.18);
+
+            border-radius: 999px;
+
+            font-size: 22px;
+            font-weight: 500;
+
+            letter-spacing: -0.02em;
+
+            color:
+                rgba(255, 255, 255, 0.82);
+
+            background:
+                rgba(255, 255, 255, 0.045);
+        }
+
+
+        /* ----------------------------------------
+           divider
+        ---------------------------------------- */
+
+        .divider {
+            width: 92px;
+            height: 3px;
+
+            margin-top: 55px;
+
+            background: #c59b22;
+
+            opacity: 0.88;
+        }
+
+
+        /* ----------------------------------------
+           Summary
+        ---------------------------------------- */
+
+        .summary {
+            margin-top: 52px;
+
+            width: 100%;
+
+            font-size: 36px;
+            line-height: 1.62;
+
+            font-weight: 400;
+
+            letter-spacing: -0.035em;
+
+            word-break: keep-all;
+
+            color:
+                rgba(255, 255, 255, 0.84);
+        }
+
+
+        /* ----------------------------------------
+           Source
+        ---------------------------------------- */
+
+        .source {
+            margin-top: 42px;
+
+            font-size: 20px;
+            font-weight: 400;
+
+            line-height: 1.5;
+
+            letter-spacing: -0.01em;
+
+            color:
+                rgba(255, 255, 255, 0.42);
+        }
+
+
+        /* ----------------------------------------
+           Footer
+        ---------------------------------------- */
+
+        .footer {
+            position: absolute;
+
+            left: 72px;
+            right: 150px;
+            bottom: 255px;
+
+            padding-top: 24px;
+
+            border-top:
+                1px solid
+                rgba(255, 255, 255, 0.13);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .footer-logo {
+            width: 154px;
+            height: auto;
+
+            opacity: 0.82;
+        }
+
+        .powered {
+            font-size: 20px;
+
+            color:
+                rgba(255, 255, 255, 0.62);
+        }
+
+        .powered strong {
+            color: #e2b429;
+        }
+
+        .footer-right {
+            font-size: 18px;
+
+            color:
+                rgba(255, 255, 255, 0.42);
+        }
+
+
+        /* ----------------------------------------
+           YouTube UI safety zone
+        ---------------------------------------- */
+
+        .safe-zone {
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            height: 200px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(8, 16, 26, 0),
+                    rgba(8, 16, 26, 0.32)
+                );
+
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="frame">
+
+    <div class="glow"></div>
+
+
+    <!-- ========================================
+         HEADER
+    ========================================= -->
+
+    <header class="header">
+
+        <div class="brand">
+
+            <img
+                class="logo"
+                src="{{ asset_path }}/icons/APDaily.svg"
+            />
+
+            <div class="date">
+                {{ date_text }}
+            </div>
+
+        </div>
+
+
+        <div class="counter">
+            {{ issue_number }} / 5
+        </div>
+
+    </header>
+
+
+    <!-- ========================================
+         MAIN ISSUE
+    ========================================= -->
+
+    <main class="main">
+
+        <div class="eyebrow">
+
+            <span class="eyebrow-dot"></span>
+
+            TODAY'S ISSUE
+            {{ "%02d"|format(issue_number) }}
+
+        </div>
+
+
+        <h1 class="headline">
+            {{ title }}
+        </h1>
+
+
+        {% if keywords %}
+
+        <div class="keywords">
+
+            {% for keyword in keywords %}
+
+            <div class="keyword">
+                {{ keyword }}
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        <div class="divider"></div>
+
+
+        <div class="summary">
+            {{ summary }}
+        </div>
+
+
+        {% if source %}
+
+        <div class="source">
+            출처 {{ source }}
+        </div>
+
+        {% endif %}
+
+    </main>
+
+
+    <!-- ========================================
+         FOOTER
+    ========================================= -->
+
+    <footer class="footer">
+
+        <div class="footer-left">
+
+            <img
+                class="footer-logo"
+                src="{{ asset_path }}/icons/logo_white.svg"
+            />
+
+            <div class="powered">
+                Powered by
+                <strong>Dustie</strong>
+            </div>
+
+        </div>
+
+
+        <div class="footer-right">
+            AssetPicker · AP Daily
+        </div>
+
+    </footer>
+
+
+    <div class="safe-zone"></div>
+
+</div>
+
+</body>
+</html>

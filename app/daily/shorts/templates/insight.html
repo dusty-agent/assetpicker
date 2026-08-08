@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+
+{% block style %}
+
+/* =========================================
+   INSIGHT
+========================================= */
+
+.insight-wrap {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    padding-top: 95px;
+}
+
+
+/* -----------------------------------------
+   Eyebrow
+----------------------------------------- */
+
+.insight-eyebrow {
+    text-align: center;
+
+    font-size: 36px;
+    font-weight: 750;
+
+    letter-spacing: 0.4px;
+
+    color: #d4af37;
+}
+
+
+/* =========================================
+   MAIN INSIGHT
+========================================= */
+
+.insight-quote {
+    margin: 60px auto 0;
+
+    width: 100%;
+    max-width: 900px;
+
+    text-align: center;
+
+    font-size: 82px;
+    line-height: 1.28;
+
+    font-weight: 800;
+
+    letter-spacing: -3.2px;
+
+    word-break: keep-all;
+
+    color: #ffffff;
+}
+
+
+/* 문장이 긴 경우에도 너무 작아지지 않게 */
+.insight-quote.long {
+    font-size: 72px;
+    line-height: 1.30;
+}
+
+
+
+/* -----------------------------------------
+   Divider
+----------------------------------------- */
+
+.insight-divider {
+    width: 110px;
+    height: 4px;
+
+    margin:
+        52px
+        auto
+        0;
+
+    border-radius: 999px;
+
+    background: #d4af37;
+}
+
+
+/* =========================================
+   DUSTIE NOTE
+========================================= */
+
+.dustie {
+    margin: 72px auto 0;
+
+    width: 100%;
+    max-width: 900px;
+
+    padding: 48px 52px 52px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 28px;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+}
+
+
+.dustie-reason {
+    margin-top: 38px;
+
+    text-align: center;
+
+    font-size: 43px;
+    line-height: 1.52;
+
+    font-weight: 430;
+
+    letter-spacing: -1.2px;
+
+    word-break: keep-all;
+
+    color: rgba(255, 255, 255, 0.92);
+}
+
+
+/* -----------------------------------------
+   Dustie header
+----------------------------------------- */
+
+.dustie-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 22px;
+
+    text-align: left;
+}
+
+
+.dustie-avatar {
+    width: 68px;
+    height: 68px;
+
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+
+    opacity: 0.92;
+}
+
+
+.dustie-title {
+    font-size: 31px;
+    font-weight: 750;
+
+    color: #d4af37;
+}
+
+
+.dustie-author {
+    margin-top: 6px;
+
+    font-size: 22px;
+    font-weight: 450;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.60
+        );
+}
+
+/* =========================================
+   SOURCES
+========================================= */
+
+.sources {
+    margin:
+        34px
+        auto
+        0;
+
+    width: 100%;
+    max-width: 860px;
+
+    padding:
+        18px
+        24px;
+
+    border:
+        1px solid
+        rgba(
+            212,
+            175,
+            55,
+            0.25
+        );
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    font-size: 21px;
+    line-height: 1.5;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.56
+        );
+}
+
+
+.sources-label {
+    margin-right: 10px;
+
+    font-weight: 700;
+
+    color: #d4af37;
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="insight-wrap">
+
+    <div class="insight-eyebrow">
+        💡 TODAY'S INSIGHT
+    </div>
+
+
+    <div
+        class="
+            insight-quote
+            {% if insight.summary|length > 42 %}
+                long
+            {% endif %}
+        "
+    >
+        {{ insight.summary }}
+    </div>
+
+
+    <div class="insight-divider"></div>
+
+
+    <div class="dustie">
+
+        <div class="dustie-header">
+
+            <img
+                src="{{ asset_path }}/dustie.svg"
+                class="dustie-avatar"
+                alt=""
+            >
+
+            <div>
+
+                <div class="dustie-title">
+                    AI Editor's Note
+                </div>
+
+                <div class="dustie-author">
+                    by Dustie 🤖
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="dustie-reason">
+            {{ insight.reason }}
+        </div>
+
+    </div>
+
+
+    {% if insight.sources %}
+
+    <div class="sources">
+
+        <span class="sources-label">
+            Sources
+        </span>
+
+        {% for source in insight.sources %}
+
+            {{ source }}
+
+            {% if not loop.last %}
+                ·
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

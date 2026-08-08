@@ -1,184 +1,561 @@
-from datetime import datetime
-from datetime import timezone
-from datetime import timedelta
-
-KST = timezone(timedelta(hours=9))
-
-today = datetime.now(KST)
+from datetime import datetime, timezone, timedelta
+from pathlib import Path
 
 from app.collector.rss_collector import RSSCollector
 
 from app.daily.adapter import to_news_cards
-from app.daily.config import ASSETS
-from app.daily.config import OUTPUT
+from app.daily.archive import (
+    save_raw_news,
+    save_curated,
+)
+from app.daily.config import (
+    OUTPUT,
+    CARDS_TEMPLATES,
+    SHORTS_TEMPLATES,
+)
 from app.daily.generator import DailyGenerator
 from app.daily.renderer.render_html import render_html
 from app.daily.renderer.render_png import render_png
+
+from app.daily.shorts.builder import (
+    build_daily_short,
+)
+
 from app.exporters.email import send_daily_email
 
-collector = RSSCollector()
 
-cards = to_news_cards(
-    collector.collect(),
-)
+# ==================================================
+# Timezone
+# ==================================================
 
-generator = DailyGenerator()
-
-pages = generator.generate(
-    cards,
+KST = timezone(
+    timedelta(hours=9)
 )
 
 
-asset_path = ASSETS.resolve().as_uri()
+# ==================================================
+# Main
+# ==================================================
 
-common = {
+def main():
 
-    "asset_path": asset_path,
+    # ==================================================
+    # Date
+    # ==================================================
 
-    "today": f"{today.year}년 {today.month}월 {today.day}일", #date.today().strftime("%Y.%m.%d"),
+    today = datetime.now(KST)
 
-    "total": 9,
+    date = today.strftime(
+        "%Y-%m-%d"
+    )
 
-}
+    today_text = (
+        f"{today.year}년 "
+        f"{today.month}월 "
+        f"{today.day}일"
+    )
 
-OUTPUT.mkdir(
+    print()
+    print("====================================")
+    print("AP Daily")
+    print("====================================")
+    print(f"DATE : {date}")
+    print(f"TEXT : {today_text}")
+    print()
 
-    parents=True,
 
-    exist_ok=True,
+    # ==================================================
+    # 1. Collect
+    # ==================================================
 
-)
+    print("📰 Collecting news...")
+
+    collector = RSSCollector()
+
+    raw_news = collector.collect()
+
+    if not raw_news:
+
+        raise RuntimeError(
+            "수집된 뉴스가 없습니다."
+        )
+
+    print(
+        f"✅ News collected: "
+        f"{len(raw_news)}"
+    )
 
 
-def render_page(
+    # ==================================================
+    # 2. Save RAW
+    # ==================================================
 
-    template: str,
+    save_raw_news(
+        raw_news,
+        output_root=Path(
+            "data/daily"
+        ),
+        rss_url=collector.RSS_URL,
+    )
 
-    output_name: str,
+    print(
+        "✅ Raw news saved"
+    )
 
-    page: int,
 
-    context: dict,
+    # ==================================================
+    # 3. Adapter
+    # ==================================================
 
-):
+    cards = to_news_cards(
+        raw_news
+    )
 
-    html = render_html(
 
-        template,
+    # ==================================================
+    # 4. Generate / Curate
+    # ==================================================
 
+    print()
+    print(
+        "🤖 Generating AP Daily..."
+    )
+
+    generator = DailyGenerator()
+
+    pages = generator.generate(
+        cards
+    )
+
+
+    # ==================================================
+    # 5. Validate
+    # ==================================================
+
+    issues = pages.get(
+        "issues",
+        [],
+    )
+
+    if len(issues) != 5:
+
+        raise RuntimeError(
+            "AP Daily는 Top 5 이슈가 필요합니다. "
+            f"현재 생성된 이슈 수: "
+            f"{len(issues)}"
+        )
+
+
+    # ==================================================
+    # 6. Save Curated
+    # ==================================================
+
+    save_curated(
+        pages,
+        output_root=Path(
+            "data/daily"
+        ),
+    )
+
+    print(
+        "✅ Curated data saved"
+    )
+
+
+    # ==================================================
+    # 7. Output directories
+    # ==================================================
+
+    OUTPUT.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    shorts_output = (
+        OUTPUT
+        / "shorts"
+    )
+
+    shorts_output.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+
+    # ==================================================
+    # Common Context
+    # ==================================================
+
+    common = {
+        "today": today_text,
+        "date_text": today_text,
+        "total": 9,
+    }
+
+
+    # ==================================================
+    # Generic Renderer
+    # ==================================================
+
+    def render_page(
+        *,
+        template: str,
+        output_name: str,
+        page: int,
+        context: dict,
+        template_dir: Path,
+        output_dir: Path,
+        width: int,
+        height: int,
+    ):
+
+        html = render_html(
+            template,
+            {
+                **common,
+                "page": page,
+                **context,
+            },
+            template_dir,
+        )
+
+        html_path = (
+            output_dir
+            / f"{output_name}.html"
+        )
+
+        png_path = (
+            output_dir
+            / f"{output_name}.png"
+        )
+
+        html_path.write_text(
+            html,
+            encoding="utf-8",
+        )
+
+        render_png(
+            html_path,
+            png_path,
+            width=width,
+            height=height,
+        )
+
+        return png_path
+
+
+    # ==================================================
+    # Card renderer
+    # ==================================================
+
+    def render_card(
+        template: str,
+        output_name: str,
+        page: int,
+        context: dict,
+    ):
+
+        png_path = render_page(
+            template=template,
+            output_name=output_name,
+            page=page,
+            context=context,
+            template_dir=CARDS_TEMPLATES,
+            output_dir=OUTPUT,
+            width=1080,
+            height=1350,
+        )
+
+        print(
+            f"✅ CARD   "
+            f"{page}/9  "
+            f"{png_path.name}"
+        )
+
+
+    # ==================================================
+    # Shorts renderer
+    # ==================================================
+
+    def render_short(
+        template: str,
+        output_name: str,
+        page: int,
+        context: dict,
+    ):
+
+        png_path = render_page(
+            template=template,
+            output_name=output_name,
+            page=page,
+            context=context,
+            template_dir=SHORTS_TEMPLATES,
+            output_dir=shorts_output,
+            width=1080,
+            height=1920,
+        )
+
+        print(
+            f"✅ SHORTS "
+            f"{page}/9  "
+            f"{png_path.name}"
+        )
+
+
+    # ==================================================
+    # Page definitions
+    # ==================================================
+
+    page_defs = []
+
+
+    # --------------------------------------------------
+    # PAGE 1
+    # Cover
+    # --------------------------------------------------
+
+    page_defs.append(
         {
-
-            **common,
-
-            "page": page,
-
-            **context,
-
-        },
-
+            "template": "cover.html",
+            "output_name": "cover",
+            "page": 1,
+            "context": (
+                pages.get(
+                    "cover",
+                    {},
+                )
+                or {}
+            ),
+        }
     )
 
-    html_path = OUTPUT / f"{output_name}.html"
 
-    html_path.write_text(
+    # --------------------------------------------------
+    # PAGE 2
+    # Introduction
+    # --------------------------------------------------
 
-        html,
-
-        encoding="utf-8",
-
-    )
-
-    render_png(
-
-        html_path,
-
-        OUTPUT / f"{output_name}.png",
-
-    )
-
-# --------------------------------------------------
-# Static Pages
-# --------------------------------------------------
-
-render_page(
-    "cover.html",
-    "cover",
-    1,
-    pages["cover"],
-)
-
-render_page(
-    "introduction.html",
-    "introduction",
-    2,
-    pages["introduction"],
-)
-
-
-# --------------------------------------------------
-# Issues (Top5)
-# --------------------------------------------------
-
-for idx, card in enumerate(pages["issues"], start=3):
-
-    render_page(
-
-        "issue.html",
-
-        f"issue_{idx-2}",
-
-        idx,
-
+    page_defs.append(
         {
-
-            "card": card,
-
-            # 홀수는 issue 배경
-            "bg": "issue_odd.png" if idx % 2 == 1 else "issue_even.png",
-
-        },
-
+            "template": "introduction.html",
+            "output_name": "introduction",
+            "page": 2,
+            "context": (
+                pages.get(
+                    "introduction",
+                    {},
+                )
+                or {}
+            ),
+        }
     )
 
 
-# --------------------------------------------------
-# Insight
-# --------------------------------------------------
+    # --------------------------------------------------
+    # PAGE 3 ~ 7
+    # Issues
+    # --------------------------------------------------
 
-render_page(
+    for issue_number, card in enumerate(
+        issues,
+        start=1,
+    ):
 
-    "insight.html",
+        page_number = (
+            issue_number + 2
+        )
 
-    "insight",
+        page_defs.append(
+            {
+                "template": "issue.html",
+                "output_name": (
+                    f"issue_"
+                    f"{issue_number}"
+                ),
+                "page": page_number,
+                "context": {
+                    "card": card,
+                    "issue_number": (
+                        issue_number
+                    ),
+                },
+            }
+        )
 
-    8,
 
-    pages["insight"],
+    # --------------------------------------------------
+    # PAGE 8
+    # Insight
+    # --------------------------------------------------
 
-)
+    insight_context = (
+        pages.get(
+            "insight",
+            {},
+        )
+        or {}
+    )
+
+    page_defs.append(
+        {
+            "template": "insight.html",
+            "output_name": "insight",
+            "page": 8,
+            "context": insight_context,
+        }
+    )
 
 
-# --------------------------------------------------
-# Ending
-# --------------------------------------------------
+    # --------------------------------------------------
+    # PAGE 9
+    # Ending
+    # --------------------------------------------------
 
-render_page(
+    ending_context = (
+        pages.get(
+            "ending",
+            {},
+        )
+        or {}
+    )
 
-    "ending.html",
+    page_defs.append(
+        {
+            "template": "ending.html",
+            "output_name": "ending",
+            "page": 9,
+            "context": ending_context,
+        }
+    )
 
-    "ending",
 
-    9,
+    # ==================================================
+    # 8. Render Cards
+    # ==================================================
 
-    pages["ending"],
+    print()
+    print("====================================")
+    print("Rendering Cards")
+    print("1080 x 1350")
+    print("====================================")
+    print()
 
-)
+    for item in page_defs:
 
-print("✅ AP Daily Complete.")
+        render_card(
+            template=item[
+                "template"
+            ],
+            output_name=item[
+                "output_name"
+            ],
+            page=item[
+                "page"
+            ],
+            context=item[
+                "context"
+            ],
+        )
 
-print("Rendering finished")
-print("Sending email...")
 
-send_daily_email()
+    # ==================================================
+    # 9. Render Shorts
+    # ==================================================
 
-print("Email sent")
+    print()
+    print("====================================")
+    print("Rendering Shorts")
+    print("1080 x 1920")
+    print("====================================")
+    print()
+
+    for item in page_defs:
+
+        render_short(
+            template=item[
+                "template"
+            ],
+            output_name=item[
+                "output_name"
+            ],
+            page=item[
+                "page"
+            ],
+            context=item[
+                "context"
+            ],
+        )
+        
+    # ==================================================
+    # 10. Build Shorts Video
+    # ==================================================
+
+    print()
+    print("====================================")
+    print("Building Shorts Video")
+    print("====================================")
+    print()
+
+
+    short_video_path = (
+        OUTPUT
+        / f"ap_daily_short_{date}.mp4"
+    )
+
+
+    try:
+
+        build_daily_short(
+            date=date,
+            source_dir=shorts_output,
+            output_path=short_video_path,
+        )
+
+        print(
+            "✅ Shorts video created"
+        )
+
+        print(
+            short_video_path
+        )
+
+
+    except Exception as exc:
+
+        print()
+        print(
+            "⚠️ Shorts video build failed."
+        )
+
+        print(
+            exc
+        )
+
+        print(
+            "AP Daily card/email pipeline will continue."
+        )
+
+
+    # ==================================================
+    # 11. Email
+    # ==================================================
+
+    print(
+        "📧 Sending email..."
+    )
+
+    send_daily_email()
+
+    print(
+        "✅ Email sent."
+    )
+
+    print()
+
+
+# ==================================================
+# Entry Point
+# ==================================================
+
+if __name__ == "__main__":
+    main()
