@@ -30,6 +30,10 @@
     letter-spacing: 0.4px;
 
     color: #d4af37;
+
+    text-shadow:
+        0 0 8px rgba(212, 175, 55, 0.20),
+        0 0 18px rgba(212, 175, 55, 0.08);
 }
 
 
@@ -54,16 +58,52 @@
 
     word-break: keep-all;
 
-    color: #ffffff;
+
+    /* -----------------------------------------
+       Gold Gradient
+    ----------------------------------------- */
+
+    background:
+        linear-gradient(
+            45deg,
+            #ffffff 0%,
+            #ffffff 30%,
+            #fffaf0 42%,
+            #e8cf8d 52%,
+            #fff7e3 62%,
+            #ffffff 74%,
+            #ffffff 100%
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+
+
+    /* -----------------------------------------
+       Soft Silver Highlight
+    ----------------------------------------- */
+
+    filter:
+        drop-shadow(
+            0 0 6px
+            rgba(255, 255, 255, 0.14)
+        )
+        drop-shadow(
+            0 0 16px
+            rgba(212, 175, 55, 0.06)
+        );
 }
 
 
 /* 문장이 긴 경우에도 너무 작아지지 않게 */
+
 .insight-quote.long {
     font-size: 72px;
     line-height: 1.30;
 }
-
 
 
 /* -----------------------------------------
@@ -82,6 +122,10 @@
     border-radius: 999px;
 
     background: #d4af37;
+
+    box-shadow:
+        0 0 10px
+        rgba(212, 175, 55, 0.16);
 }
 
 
@@ -122,7 +166,17 @@
 
     word-break: keep-all;
 
-    color: rgba(255, 255, 255, 0.92);
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.92
+        );
+
+    text-shadow:
+        0 0 6px
+        rgba(255, 255, 255, 0.08);
 }
 
 
@@ -146,6 +200,7 @@
     height: 68px;
 
     object-fit: contain;
+
     filter: brightness(0) invert(1);
 
     opacity: 0.92;
@@ -157,6 +212,10 @@
     font-weight: 750;
 
     color: #d4af37;
+
+    text-shadow:
+        0 0 8px rgba(212, 175, 55, 0.20),
+        0 0 16px rgba(212, 175, 55, 0.08);
 }
 
 
@@ -174,6 +233,7 @@
             0.60
         );
 }
+
 
 /* =========================================
    SOURCES
@@ -231,82 +291,78 @@
 
 {% block content %}
 
-<div class="insight-wrap">
-
-    <div class="insight-eyebrow">
-        💡 TODAY'S INSIGHT
-    </div>
+<div class="insight-eyebrow">
+    💡 TODAY'S INSIGHT
+</div>
 
 
-    <div
-        class="
-            insight-quote
-            {% if insight.summary|length > 42 %}
-                long
-            {% endif %}
-        "
-    >
-        {{ insight.summary }}
-    </div>
+<div
+    class="
+        insight-quote
+        {% if insight.summary|length > 42 %}
+            long
+        {% endif %}
+    "
+>
+    {{ insight.summary }}
+</div>
 
 
-    <div class="insight-divider"></div>
+<div class="insight-divider"></div>
 
 
-    <div class="dustie">
+<div class="dustie">
 
-        <div class="dustie-header">
+    <div class="dustie-header">
 
-            <img
-                src="{{ asset_path }}/dustie.svg"
-                class="dustie-avatar"
-                alt=""
-            >
+        <img
+            src="{{ asset_path }}/dustie.svg"
+            class="dustie-avatar"
+            alt=""
+        >
 
-            <div>
+        <div>
 
-                <div class="dustie-title">
-                    AI Editor's Note
-                </div>
+            <div class="dustie-title">
+                AI Editor's Note
+            </div>
 
-                <div class="dustie-author">
-                    by Dustie 🤖
-                </div>
-
+            <div class="dustie-author">
+                by Dustie 🤖
             </div>
 
         </div>
 
-
-        <div class="dustie-reason">
-            {{ insight.reason }}
-        </div>
-
     </div>
 
 
-    {% if insight.sources %}
-
-    <div class="sources">
-
-        <span class="sources-label">
-            Sources
-        </span>
-
-        {% for source in insight.sources %}
-
-            {{ source }}
-
-            {% if not loop.last %}
-                ·
-            {% endif %}
-
-        {% endfor %}
-
+    <div class="dustie-reason">
+        {{ insight.reason }}
     </div>
-
-    {% endif %}
 
 </div>
+
+
+{% if insight.sources %}
+
+<div class="sources">
+
+    <span class="sources-label">
+        Sources
+    </span>
+
+    {% for source in insight.sources %}
+
+        {{ source }}
+
+        {% if not loop.last %}
+            ·
+        {% endif %}
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
 
 {% endblock %}

@@ -11,10 +11,10 @@
         linear-gradient(
             180deg,
             rgba(4, 10, 18, 0.30) 0%,
-            rgba(4, 10, 18, 0.40) 45%,
-            rgba(4, 10, 18, 0.62) 100%
+            rgba(4, 10, 18, 0.42) 42%,
+            rgba(4, 10, 18, 0.64) 100%
         ),
-        url("{{ asset_path }}/images/ending.png");
+        url("{{ asset_path }}/images/intro.png");
 
     background-size: cover;
     background-position: center center;
@@ -36,99 +36,225 @@
 
     text-align: center;
 
-    padding-top: 120px;
+    padding-top: 115px;
+
+    /* White highlight */
+    text-shadow:
+        0 0 6px rgba(255, 255, 255, 0.16),
+        0 0 14px rgba(255, 255, 255, 0.08);
 }
 
 
-/* -----------------------------------------
-   Dustie
------------------------------------------ */
+/* =========================================
+   DUSTIE
+========================================= */
 
-.ending-dustie {
-    width: 110px;
-    height: 110px;
+.dustie-avatar {
+    width: 118px;
+    height: 118px;
 
     object-fit: contain;
+
     filter: brightness(0) invert(1);
 
     opacity: 0.94;
+
+    margin-bottom: 20px;
 }
 
 
-.ending-dustie-title {
-    margin-top: 18px;
-
-    font-size: 28px;
-    font-weight: 500;
-
-    color: rgba(
-        255,
-        255,
-        255,
-        0.72
-    );
-}
-
-
-/* -----------------------------------------
-   Eyebrow
------------------------------------------ */
-
-.ending-eyebrow {
-    margin-top: 54px;
-
-    font-size: 32px;
-    line-height: 1.35;
-
-    font-weight: 750;
+.dustie-label {
+    font-size: 24px;
+    font-weight: 550;
 
     letter-spacing: 0.6px;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.82
+        );
+}
+
+
+/* =========================================
+   EYEBROW
+========================================= */
+
+.ending-eyebrow {
+    margin-top: 58px;
+
+    font-size: 31px;
+    font-weight: 750;
+
+    letter-spacing: 0.8px;
 
     color: #d4af37;
 }
 
 
-/* -----------------------------------------
-   Main message
------------------------------------------ */
+/* =========================================
+   TITLE
+========================================= */
 
 .ending-title {
     margin:
-        54px
+        34px
         auto
         0;
 
     width: 100%;
-    max-width: 880px;
+    max-width: 900px;
 
-    text-align: center;
-
-    font-size: 92px;
-    line-height: 1.18;
+    font-size: 84px;
+    line-height: 1.13;
 
     font-weight: 800;
 
-    letter-spacing: -4px;
-
-    word-break: keep-all;
+    letter-spacing: -3px;
 
     color: #ffffff;
 
-    text-shadow:
-        0 3px 16px
-        rgba(0, 0, 0, 0.32);
+    word-break: keep-all;
 }
 
 
-/* -----------------------------------------
-   Divider
------------------------------------------ */
+.ending-title .gold {
+    color: #d4af37;
+
+    /* Gold highlight */
+    text-shadow:
+        0 0 8px rgba(212, 175, 55, 0.22),
+        0 0 18px rgba(212, 175, 55, 0.10);
+}
+
+/* =========================================
+   CTA
+========================================= */
+
+.ending-actions {
+    margin-top: 64px;
+
+    width: 100%;
+    max-width: 860px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 24px;
+}
+
+
+.ending-action {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+
+    min-height: 170px;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.12
+        );
+
+    border-radius: 24px;
+
+    background:
+        rgba(
+            5,
+            11,
+            18,
+            0.38
+        );
+
+    backdrop-filter: blur(8px);
+
+    box-shadow:
+        0 12px 32px
+        rgba(0, 0, 0, 0.18);
+}
+
+
+.ending-action-icon {
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 66px;
+    line-height: 1;
+
+    color: #ffffff;
+}
+
+
+/* 구독만 골드 */
+
+.ending-action.subscribe .ending-action-icon {
+    color: #d4af37;
+}
+
+
+.ending-action span {
+    font-size: 30px;
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.96
+        );
+}
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.ending-description {
+    margin-top: 58px;
+
+    font-size: 34px;
+    line-height: 1.55;
+
+    font-weight: 450;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.90
+        );
+}
+
+
+/* =========================================
+   DIVIDER
+========================================= */
 
 .ending-divider {
     width: 110px;
     height: 4px;
 
-    margin-top: 54px;
+    margin-top: 42px;
 
     border-radius: 999px;
 
@@ -136,24 +262,23 @@
 }
 
 
-/* -----------------------------------------
-   Update text
------------------------------------------ */
+/* =========================================
+   BOTTOM MESSAGE
+========================================= */
 
-.ending-update {
-    margin-top: 48px;
+.ending-bottom {
+    margin-top: 34px;
 
-    font-size: 38px;
+    font-size: 27px;
     font-weight: 500;
 
-    letter-spacing: -0.8px;
-
-    color: rgba(
-        255,
-        255,
-        255,
-        0.82
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.78
+        );
 }
 
 {% endblock %}
@@ -163,37 +288,131 @@
 
 <div class="ending-wrap">
 
+
+    <!-- =====================================
+         DUSTIE
+    ====================================== -->
+
     <img
         src="{{ asset_path }}/dustie.svg"
-        class="ending-dustie"
+        class="dustie-avatar"
         alt="AI Editor Dustie"
     >
 
 
-    <div class="ending-dustie-title">
+    <div class="dustie-label">
         AI Editor Dustie
     </div>
 
 
+    <!-- =====================================
+         EYEBROW
+    ====================================== -->
+
     <div class="ending-eyebrow">
-        TODAY'S BRIEF COMPLETE<br>
-        SEE YOU TOMORROW
+        SEE YOU TOMORROW MORNING
     </div>
 
 
+    <!-- =====================================
+         TITLE
+    ====================================== -->
+
     <h1 class="ending-title">
-        내일도 가장 빠른<br>
-        부동산 브리핑으로<br>
-        찾아오겠습니다.
+
+        내일 아침에도<br>
+
+        <span class="gold">
+            AP Daily
+        </span>
+
+        가 찾아옵니다.
+
     </h1>
 
+
+    <!-- =====================================
+         CTA
+    ====================================== -->
+
+    <div class="ending-actions">
+
+
+        <!-- LIKE -->
+
+        <div class="ending-action">
+
+            <div class="ending-action-icon">
+                ♡
+            </div>
+
+            <span>
+                좋아요
+            </span>
+
+        </div>
+
+
+        <!-- SUBSCRIBE -->
+
+        <div class="ending-action subscribe">
+
+            <div class="ending-action-icon">
+                ▶
+            </div>
+
+            <span>
+                구독
+            </span>
+
+        </div>
+
+
+        <!-- NOTIFICATION -->
+
+        <div class="ending-action">
+
+            <div class="ending-action-icon">
+                🔔
+            </div>
+
+            <span>
+                알림 설정
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================
+         DESCRIPTION
+    ====================================== -->
+
+    <div class="ending-description">
+
+        매일 아침 새로운 부동산 브리핑을<br>
+        빠르고 간결하게 만나보세요.
+
+    </div>
+
+
+    <!-- =====================================
+         DIVIDER
+    ====================================== -->
 
     <div class="ending-divider"></div>
 
 
-    <div class="ending-update">
-        매일 아침 업데이트
+    <!-- =====================================
+         BOTTOM
+    ====================================== -->
+
+    <div class="ending-bottom">
+        내일 아침에 다시 만나요.
     </div>
+
 
 </div>
 
