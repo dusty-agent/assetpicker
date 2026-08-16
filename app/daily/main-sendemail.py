@@ -21,6 +21,9 @@ from app.daily.shorts.builder import (
     build_daily_short,
 )
 
+from app.exporters.email import send_daily_email
+
+
 # ==================================================
 # Timezone
 # ==================================================
@@ -529,8 +532,25 @@ def main():
         )
 
         print(
-            "AP Daily card pipeline will continue."
+            "AP Daily card/email pipeline will continue."
         )
+
+
+    # ==================================================
+    # 11. Email
+    # ==================================================
+
+    print(
+        "📧 Sending email..."
+    )
+
+    send_daily_email()
+
+    print(
+        "✅ Email sent."
+    )
+
+    print()
 
 
 # ==================================================

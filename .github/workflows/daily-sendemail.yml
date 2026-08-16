@@ -62,11 +62,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
-
       # ==========================================
       # 날짜 추가
       # ==========================================
-
+      
       - name: Set KST date
         run: |
           echo "AP_DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)" >> $GITHUB_ENV
@@ -80,12 +79,16 @@ jobs:
       # → Card News
       # → Shorts Images
       # → Shorts MP4
+      # → Email
       # ==========================================
 
       - name: Run AP Daily
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
 
         run: |
           python -m app.daily.main
