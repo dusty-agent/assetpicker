@@ -3,11 +3,6 @@ name: AP Daily
 on:
   workflow_dispatch:
 
-  schedule:
-    # 한국시간 오전 6:30 (UTC 전날 21:30)
-    - cron: "30 21 * * *"
-
-
 jobs:
 
   build:

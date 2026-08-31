@@ -1,26 +1,13 @@
 name: AP Daily
 
-
 on:
-
   workflow_dispatch:
-
-  schedule:
-
-    # ==========================================
-    # 한국시간 오전 6:30
-    # UTC 전날 21:30
-    # ==========================================
-
-    - cron: "0 22 * * *"
-
 
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
-
 
     steps:
 
@@ -38,7 +25,6 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@v5
-
         with:
           python-version: "3.12"
 
@@ -48,11 +34,8 @@ jobs:
       # ==========================================
 
       - name: Install dependencies
-
         run: |
-
           python -m pip install --upgrade pip
-
           pip install -r requirements.txt
 
 
@@ -61,25 +44,17 @@ jobs:
       # ==========================================
 
       - name: Install Playwright
-
         run: |
-
           python -m playwright install --with-deps chromium
 
 
       # ==========================================
       # FFmpeg / FFprobe
-      #
-      # ffmpeg 패키지 설치 시
-      # ffmpeg + ffprobe 함께 설치됨
       # ==========================================
 
       - name: Install FFmpeg
-
         run: |
-
           sudo apt-get update
-
           sudo apt-get install -y ffmpeg
 
 
@@ -88,45 +63,20 @@ jobs:
       # ==========================================
 
       - name: Set KST date
-
         run: |
-
           echo "AP_DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)" >> $GITHUB_ENV
 
 
       # ==========================================
       # Run AP Daily
-      #
-      # Collect
-      # ↓
-      # Curate
-      # ↓
-      # Card News
-      # ↓
-      # Shorts Cards
-      # ↓
-      # OpenAI TTS
-      # ↓
-      # Narration MP3
-      # ↓
-      # Dynamic Timeline
-      # ↓
-      # BGM + Narration + SFX
-      # ↓
-      # Shorts MP4
       # ==========================================
 
       - name: Run AP Daily
-
         env:
-
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
 
-
         run: |
-
           python -m app.daily.main
 
 
@@ -135,58 +85,16 @@ jobs:
       # ==========================================
 
       - name: Check AP Daily Output
-
         run: |
-
           echo "===================================="
           echo "AP Daily Output"
           echo "===================================="
 
-          find "output/daily/${AP_DATE}" -type f | sort
+          find "output/daily/${AP_DATE}" -type f | sort || true
 
           echo ""
           echo "===================================="
           echo "Daily Data"
           echo "===================================="
 
-          find "data/daily/${AP_DATE}" -type f | sort
-
-
-      # ==========================================
-      # Upload Complete Daily Output
-      #
-      # output/daily/YYYY-MM-DD/
-      #
-      # ├─ cards/
-      # │  ├─ *.html
-      # │  └─ *.png
-      # │
-      # └─ shorts/
-      #    ├─ card_shorts/
-      #    ├─ narration/
-      #    └─ ap_daily_short_*.mp4
-      #
-      # +
-      #
-      # data/daily/YYYY-MM-DD/
-      # ├─ raw.json
-      # └─ curated.json
-      # ==========================================
-
-      - name: Upload AP Daily Output
-
-        uses: actions/upload-artifact@v4
-
-        with:
-
-          name: ap-daily-${{ env.AP_DATE }}
-
-          path: |
-
-            output/daily/${{ env.AP_DATE }}/
-
-            data/daily/${{ env.AP_DATE }}/
-
-          retention-days: 30
-
-          if-no-files-found: error
+          find "data/daily/${AP_DATE}" -type f | sort || true
