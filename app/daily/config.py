@@ -32,7 +32,7 @@ HEIGHT = 1350
 
 FONT = "Pretendard"
 
-PRIMARY = "#D4AF37"
+PRIMARY = "#F6D85B"
 TEXT = "#FFFFFF"
 TEXT_SUB = "#D1D5DB"
 

@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block styles %}
+
+.issue-bg {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.issue-overlay {
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(3,14,18,.34) 0%,
+            rgba(3,15,19,.50) 45%,
+            rgba(3,10,15,.68) 100%
+        );
+}
+
+.issue-content {
+    position:absolute;
+    top:49%;
+    left:50%;
+    width:860px;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    z-index:10;
+    text-shadow:
+        0 2px 8px rgba(0,0,0,.38),
+        0 1px 2px rgba(0,0,0,.28);
+}
+
+.eyebrow {
+    text-align:center;
+    font-size:36px;
+    font-weight:800;
+    letter-spacing:.4px;
+
+    color:var(--accent);
+
+    text-shadow:
+        0 0 8px rgba(98,230,223,.28),
+        0 0 18px rgba(98,230,223,.12);
+}
+
+.issue-number {
+    margin-top:14px;
+    font-size:18px;
+    font-weight:500;
+    letter-spacing:1px;
+    color:rgba(255,255,255,.55);
+}
+
+.issue-title {
+    width:100%;
+    margin:42px auto 0;
+    font-size:64px;
+    line-height:1.20;
+    font-weight:800;
+    letter-spacing:-2px;
+    word-break:keep-all;
+}
+
+.issue-title.long {
+    font-size:56px;
+}
+
+.issue-divider {
+    width:110px;
+    height:4px;
+
+    margin:46px auto 0;
+
+    border-radius:999px;
+
+    background:var(--accent);
+
+    box-shadow:
+        0 0 10px rgba(98,230,223,.32);
+}
+
+.tags {
+    margin-top:32px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.tags span {
+    padding:10px 20px;
+    border:1px solid rgba(72,199,194,.50);
+    border-radius:999px;
+    background:rgba(72,199,194,.08);
+    font-size:21px;
+    font-weight:650;
+    color:var(--accent);
+}
+
+.issue-summary {
+    width:720px;
+    margin:42px auto 0;
+    font-size:34px;
+    line-height:1.62;
+    font-weight:500;
+    letter-spacing:-1px;
+    word-break:keep-all;
+    color:rgba(255,255,255,.94);
+}
+
+.source {
+    width:720px;
+    margin:34px auto 0;
+    padding:15px 20px;
+    border:1px solid rgba(72,199,194,.22);
+    border-radius:12px;
+    background:rgba(3,15,19,.32);
+    font-size:16px;
+    line-height:1.5;
+    color:rgba(255,255,255,.58);
+}
+
+.source-label {
+    margin-right:7px;
+    color:var(--accent);
+    font-weight:700;
+}
+
+{% endblock %}
+
+{% block content %}
+
+<img class="issue-bg"
+     src="{{ development_asset_path }}/images/issue.png"
+     onerror="this.style.display='none'"
+     alt="">
+
+<div class="issue-overlay"></div>
+
+<main class="issue-content">
+    <div class="eyebrow">★ TODAY'S DEVELOPMENT UPDATE</div>
+    <div class="issue-number">UPDATE {{ issue_number }}</div>
+
+    <h1 class="issue-title {% if card.title|length > 16 %}long{% endif %}">
+        {{ card.title }}
+    </h1>
+
+    <div class="issue-divider"></div>
+
+    {% if card.tags %}
+    <div class="tags">
+        {% for tag in card.tags %}
+        <span>{{ tag }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="issue-summary">{{ card.summary }}</div>
+
+    {% if card.sources %}
+    <div class="source">
+        <span class="source-label">Source</span>
+        {% for source in card.sources %}
+            {{ source }}{% if not loop.last %} · {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</main>
+
+{% endblock %}

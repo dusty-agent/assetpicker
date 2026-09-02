@@ -2,14 +2,19 @@ from pathlib import Path
 import subprocess
 import os
 import shutil
+from utils.subtitles import write_srt
+import urllib3
 
+from utils.subtitle_translator import (
+    generate_multilingual_srt,
+)
 
 # ==================================================
 # Root
 # ==================================================
 
 ROOT = Path(__file__).resolve().parents[3]
-
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ==================================================
 # FFmpeg / FFprobe
@@ -568,6 +573,67 @@ def build_timeline(
         total_duration,
     )
 
+
+# ==================================================
+# Build Subtitle Cues
+# ==================================================
+
+def build_subtitle_cues(
+    *,
+    scripts: dict[str, str],
+    narration_dir: Path,
+    starts: dict[str, float],
+) -> list[dict]:
+
+    narration_timeline = [
+        ("opening", 0.0),
+
+        ("issue_1", starts["issue_1.png"]),
+        ("issue_2", starts["issue_2.png"]),
+        ("issue_3", starts["issue_3.png"]),
+        ("issue_4", starts["issue_4.png"]),
+        ("issue_5", starts["issue_5.png"]),
+
+        ("insight", starts["insight.png"]),
+        ("ending", starts["ending.png"]),
+    ]
+
+    subtitle_cues = []
+
+    for name, start_time in narration_timeline:
+
+        if name not in scripts:
+            raise RuntimeError(
+                "자막용 나레이션 대본이 없습니다.\n"
+                f"Missing script: {name}"
+            )
+
+        text = str(
+            scripts[name]
+        ).strip()
+
+        if not text:
+            raise RuntimeError(
+                "자막용 나레이션 대본이 비어 있습니다.\n"
+                f"Script: {name}"
+            )
+
+        narration_path = (
+            narration_dir
+            / NARRATION_FILES[name]
+        )
+
+        audio_duration = get_audio_duration(
+            narration_path
+        )
+
+        subtitle_cues.append({
+            "text": text,
+            "start": start_time,
+            "end": start_time + audio_duration,
+        })
+
+    return subtitle_cues
 
 # ==================================================
 # Print Timeline
@@ -1290,6 +1356,7 @@ def build_daily_short(
     date: str,
     source_dir: Path,
     output_path: Path,
+    scripts: dict[str, str],
 ) -> Path:
 
     """
@@ -1396,6 +1463,21 @@ def build_daily_short(
         total_duration,
     ) = build_timeline(
         durations
+    )
+    
+    # ==================================================
+    # Subtitle Cues
+    # ==================================================
+
+    subtitle_cues = build_subtitle_cues(
+        scripts=scripts,
+        narration_dir=narration_dir,
+        starts=starts,
+    )
+
+    srt_path = (
+        output_path
+        .with_suffix(".srt")
     )
 
 
@@ -1575,6 +1657,19 @@ def build_daily_short(
             starts=starts,
             total_duration=total_duration,
         )
+        
+        # ==================================================
+        # 4. YouTube Subtitle
+        # ==================================================
+
+        write_srt(
+            subtitle_cues,
+            srt_path,
+        )
+        
+        generate_multilingual_srt(
+            srt_path
+        )       
 
 
         # ==================================================
@@ -1598,7 +1693,13 @@ def build_daily_short(
         )
 
         print(
-            output_path
+            f"Video    : "
+            f"{output_path}"
+        )
+
+        print(
+            f"Subtitle : "
+            f"{srt_path}"
         )
 
         print()

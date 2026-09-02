@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block style %}
+
+.page {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(3,14,18,.30) 0%,
+            rgba(3,15,19,.42) 42%,
+            rgba(3,10,15,.66) 100%
+        ),
+        url("{{ development_asset_path }}/images/intro.png");
+
+    background-size:cover;
+    background-position:center center;
+    background-repeat:no-repeat;
+}
+
+.intro-wrap {
+    position:absolute;
+    top:50%;
+    left:0;
+    right:0;
+    transform:translateY(-50%);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+
+    text-shadow:
+        0 0 6px rgba(255,255,255,.16),
+        0 0 14px rgba(255,255,255,.08);
+}
+
+.kicker {
+    color:var(--accent);
+    font-size:36px;
+    font-weight:750;
+    letter-spacing:.5px;
+}
+
+.intro-title {
+    margin:34px 0 0;
+
+    width:100%;
+    max-width:900px;
+
+    font-size:84px;
+    line-height:1.10;
+    font-weight:800;
+    letter-spacing:-3px;
+
+    word-break:keep-all;
+}
+
+.intro-description {
+    margin:48px auto 0;
+
+    width:100%;
+    max-width:860px;
+
+    font-size:34px;
+    line-height:1.5;
+    font-weight:430;
+
+    color:rgba(255,255,255,.80);
+}
+
+.intro-divider {
+    width:110px;
+    height:4px;
+
+    margin-top:46px;
+
+    border-radius:999px;
+
+    background:var(--accent);
+}
+
+.sources {
+    margin-top:42px;
+
+    width:100%;
+    max-width:820px;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:16px;
+}
+
+.source-item {
+    padding:17px 24px;
+
+    border:1px solid rgba(72,199,194,.34);
+
+    border-radius:14px;
+
+    background:rgba(3,16,20,.46);
+
+    font-size:30px;
+    font-weight:650;
+}
+
+.coverage {
+    margin-top:42px;
+
+    font-size:29px;
+    line-height:1.55;
+    font-weight:500;
+
+    color:rgba(255,255,255,.78);
+}
+
+.intro-foot {
+    margin-top:34px;
+
+    font-size:29px;
+    line-height:1.55;
+
+    color:rgba(255,255,255,.72);
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="intro-wrap">
+
+    <div class="kicker">
+        OFFICIAL DATA SOURCES
+    </div>
+
+    <h1 class="intro-title">
+        오늘 확인한<br>
+        공식 개발·정비사업 자료
+    </h1>
+
+    <div class="intro-description">
+        수집에 성공한 공식 출처만 표시합니다.
+    </div>
+
+    <div class="intro-divider"></div>
+
+    <div class="sources">
+        {% for source in card.sources %}
+        <div class="source-item">
+            {{ source }}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="coverage">
+        정비구역 · 사업시행 · 관리처분<br>
+        주택건설사업 · 시공자 선정 · 주택정책
+    </div>
+
+    <div class="intro-foot">
+        공식기관의 신규 고시와 변경사항을<br>
+        AssetPicker가 매일 선별합니다.
+    </div>
+
+</div>
+
+{% endblock %}

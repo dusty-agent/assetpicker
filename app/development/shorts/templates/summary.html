@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block style %}
+
+.page {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(3,14,18,.56) 0%,
+            rgba(3,14,18,.72) 50%,
+            rgba(3,10,15,.90) 100%
+        ),
+        url("{{ development_asset_path }}/images/intro.png");
+
+    background-size:cover;
+    background-position:center center;
+    background-repeat:no-repeat;
+}
+
+.summary-wrap {
+    position:absolute;
+    top:50%;
+    left:0;
+    right:0;
+
+    transform:translateY(-50%);
+
+    text-align:center;
+}
+
+.summary-eyebrow {
+    font-size:36px;
+    font-weight:750;
+
+    color:var(--accent);
+
+    letter-spacing:.4px;
+}
+
+.summary-keyword {
+    margin-top:28px;
+
+    font-size:28px;
+    font-weight:650;
+
+    color:rgba(255,255,255,.62);
+}
+
+.summary-title {
+    margin:46px auto 0;
+
+    max-width:880px;
+
+    font-size:72px;
+    line-height:1.24;
+    font-weight:800;
+
+    letter-spacing:-2.8px;
+
+    word-break:keep-all;
+}
+
+.summary-divider {
+    width:110px;
+    height:4px;
+
+    margin:48px auto 0;
+
+    border-radius:999px;
+
+    background:var(--accent);
+}
+
+.summary-reason {
+    margin:50px auto 0;
+
+    max-width:840px;
+
+    font-size:38px;
+    line-height:1.58;
+    font-weight:430;
+
+    letter-spacing:-1.1px;
+
+    word-break:keep-all;
+
+    color:rgba(255,255,255,.82);
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="summary-wrap">
+
+    <div class="summary-eyebrow">
+        TODAY'S DEVELOPMENT SUMMARY
+    </div>
+
+
+    {% if card.keyword %}
+
+    <div class="summary-keyword">
+        KEYWORD · {{ card.keyword }}
+    </div>
+
+    {% endif %}
+
+
+    <div class="summary-title">
+        {{ card.summary }}
+    </div>
+
+
+    <div class="summary-divider"></div>
+
+
+    {% if card.reason %}
+
+    <div class="summary-reason">
+        {{ card.reason }}
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

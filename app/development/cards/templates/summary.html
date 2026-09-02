@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block styles %}
+
+.summary-bg {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.summary-overlay {
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(3,14,18,.34) 0%,
+            rgba(3,15,19,.54) 52%,
+            rgba(3,10,15,.72) 100%
+        );
+}
+
+.summary-content {
+    position:absolute;
+    top:48%;
+    left:50%;
+    width:860px;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    z-index:10;
+}
+
+.summary-eyebrow {
+    color:var(--accent);
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.summary-keyword {
+    margin-top:26px;
+    font-size:22px;
+    font-weight:650;
+    color:rgba(255,255,255,.68);
+}
+
+.summary-title {
+    margin:28px auto 0;
+    width:820px;
+    font-size:58px;
+    line-height:1.22;
+    font-weight:800;
+    letter-spacing:-2px;
+    word-break:keep-all;
+}
+
+.summary-divider {
+    width:110px;
+    height:2px;
+    margin:38px auto;
+    background:var(--accent);
+}
+
+.summary-reason {
+    width:740px;
+    margin:0 auto;
+    font-size:25px;
+    line-height:1.62;
+    font-weight:500;
+    word-break:keep-all;
+    color:rgba(255,255,255,.78);
+}
+
+{% endblock %}
+
+{% block content %}
+
+<img class="summary-bg"
+     src="{{ development_asset_path }}/images/intro.png"
+     onerror="this.style.display='none'"
+     alt="">
+
+<div class="summary-overlay"></div>
+
+<main class="summary-content">
+    <div class="summary-eyebrow">
+        TODAY'S DEVELOPMENT SUMMARY
+    </div>
+
+    {% if card.keyword %}
+    <div class="summary-keyword">
+        KEYWORD · {{ card.keyword }}
+    </div>
+    {% endif %}
+
+    <div class="summary-title">
+        {{ card.summary }}
+    </div>
+
+    <div class="summary-divider"></div>
+
+    {% if card.reason %}
+    <div class="summary-reason">
+        {{ card.reason }}
+    </div>
+    {% endif %}
+</main>
+
+{% endblock %}

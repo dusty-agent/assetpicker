@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+
+{% block style %}
+
+/* =========================================
+   ENDING BACKGROUND
+========================================= */
+
+.page {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(3,14,18,.50) 0%,
+            rgba(3,15,19,.58) 45%,
+            rgba(3,10,15,.78) 100%
+        ),
+        url("{{ development_asset_path }}/images/cover.png");
+
+    background-size:cover;
+    background-position:right center;
+    background-repeat:no-repeat;
+}
+
+
+/* =========================================
+   ENDING
+========================================= */
+
+.ending-wrap {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    padding-top: 115px;
+
+    text-shadow:
+        0 0 6px rgba(255, 255, 255, 0.16),
+        0 0 14px rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================================
+   DUSTIE
+========================================= */
+
+.dustie-avatar {
+    width: 118px;
+    height: 118px;
+
+    object-fit: contain;
+
+    filter: brightness(0) invert(1);
+
+    opacity: 0.94;
+
+    margin-bottom: 20px;
+}
+
+
+.dustie-label {
+    font-size: 24px;
+    font-weight: 550;
+
+    letter-spacing: 0.6px;
+
+    color: rgba(255, 255, 255, 0.82);
+}
+
+
+/* =========================================
+   EYEBROW
+========================================= */
+
+.ending-eyebrow {
+    margin-top:58px;
+
+    font-size:31px;
+    font-weight:800;
+    letter-spacing:.8px;
+
+    color:var(--accent);
+
+    text-shadow:
+        0 0 8px rgba(98,230,223,.28),
+        0 0 18px rgba(98,230,223,.12);
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.ending-title {
+    margin: 34px auto 0;
+
+    width: 100%;
+    max-width: 900px;
+
+    font-size: 80px;
+    line-height: 1.15;
+
+    font-weight: 800;
+
+    letter-spacing: -3px;
+
+    color: #ffffff;
+
+    word-break: keep-all;
+}
+
+
+.ending-title .gold {
+    color:var(--accent);
+
+    text-shadow:
+        0 0 10px rgba(98,230,223,.34),
+        0 0 22px rgba(98,230,223,.16);
+}
+
+
+/* =========================================
+   CTA
+========================================= */
+
+.ending-actions {
+    margin-top: 64px;
+
+    width: 100%;
+    max-width: 860px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 24px;
+}
+
+
+.ending-action {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+
+    min-height: 170px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
+    border-radius: 24px;
+
+    background:
+        rgba(3, 15, 19, 0.46);
+
+    backdrop-filter: blur(8px);
+
+    box-shadow:
+        0 12px 32px
+        rgba(0, 0, 0, 0.20);
+}
+
+
+.ending-action-icon {
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 66px;
+    line-height: 1;
+
+    color: #ffffff;
+}
+
+
+/* 구독만 Development accent */
+
+.ending-action.subscribe .ending-action-icon {
+    color: var(--accent);
+}
+
+
+.ending-action span {
+    font-size: 30px;
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+
+    color: rgba(255, 255, 255, 0.96);
+}
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.ending-description {
+    margin-top: 58px;
+
+    font-size: 34px;
+    line-height: 1.55;
+
+    font-weight: 450;
+
+    color: rgba(255, 255, 255, 0.90);
+}
+
+
+/* =========================================
+   DIVIDER
+========================================= */
+
+.ending-divider {
+    width: 110px;
+    height: 4px;
+
+    margin-top: 42px;
+
+    border-radius: 999px;
+
+    background: var(--accent);
+}
+
+
+/* =========================================
+   BOTTOM MESSAGE
+========================================= */
+
+.ending-bottom {
+    margin-top: 34px;
+
+    font-size: 27px;
+    font-weight: 500;
+
+    color: rgba(255, 255, 255, 0.78);
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="ending-wrap">
+
+
+    <!-- DUSTIE -->
+
+    <img
+        src="{{ shared_asset_path }}/dustie.svg"
+        class="dustie-avatar"
+        alt="AI Editor Dustie"
+    >
+
+
+    <div class="dustie-label">
+        AI Editor Dustie
+    </div>
+
+
+    <!-- EYEBROW -->
+
+    <div class="ending-eyebrow">
+        DEVELOPMENT UPDATE
+    </div>
+
+
+    <!-- TITLE -->
+
+    <h1 class="ending-title">
+
+        내일도 새로운<br>
+
+        <span class="gold">
+            정비사업 변화
+        </span>
+
+        를 전해드립니다.
+
+    </h1>
+
+
+    <!-- CTA -->
+
+    <div class="ending-actions">
+
+
+        <!-- LIKE -->
+
+        <div class="ending-action">
+
+            <div class="ending-action-icon">
+                ♡
+            </div>
+
+            <span>
+                좋아요
+            </span>
+
+        </div>
+
+
+        <!-- SUBSCRIBE -->
+
+        <div class="ending-action subscribe">
+
+            <div class="ending-action-icon">
+                ▶
+            </div>
+
+            <span>
+                구독
+            </span>
+
+        </div>
+
+
+        <!-- NOTIFICATION -->
+
+        <div class="ending-action">
+
+            <div class="ending-action-icon">
+                🔔
+            </div>
+
+            <span>
+                알림 설정
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- DESCRIPTION -->
+
+    <div class="ending-description">
+
+        재개발 · 재건축 · 주택개발의 변화를<br>
+        공식자료를 바탕으로 빠르게 전해드립니다.
+
+    </div>
+
+
+    <!-- DIVIDER -->
+
+    <div class="ending-divider"></div>
+
+
+    <!-- BOTTOM -->
+
+    <div class="ending-bottom">
+        다음 Development Update에서 만나요.
+    </div>
+
+
+</div>
+
+{% endblock %}

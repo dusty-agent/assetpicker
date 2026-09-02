@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block styles %}
+
+.ending-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ending-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(3,14,18,.34) 0%,
+            rgba(3,15,19,.46) 42%,
+            rgba(3,10,15,.64) 100%
+        );
+}
+
+.ending-content {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    width: 820px;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    z-index: 10;
+}
+
+.dustie {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 2px;
+    filter: brightness(0) invert(1);
+    opacity: .92;
+}
+
+.dustie-title {
+    margin-top: 5px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    color: rgba(255,255,255,.75);
+}
+
+.ending-eyebrow {
+    margin-top:58px;
+
+    font-size:31px;
+    font-weight:800;
+    letter-spacing:.8px;
+
+    color:var(--accent);
+
+    text-shadow:
+        0 0 8px rgba(98,230,223,.28),
+        0 0 18px rgba(98,230,223,.12);
+}
+
+.ending-title {
+    margin: 0;
+    font-size: 76px;
+    line-height: 1.22;
+    font-weight: 800;
+    letter-spacing: -2px;
+    word-break: keep-all;
+}
+
+.ending-title .gold {
+    color:var(--accent);
+
+    text-shadow:
+        0 0 10px rgba(98,230,223,.34),
+        0 0 22px rgba(98,230,223,.16);
+}
+
+.ending-update {
+    margin-top: 56px;
+    font-size: 30px;
+    font-weight: 500;
+    color: rgba(255,255,255,.88);
+}
+
+{% endblock %}
+
+{% block content %}
+
+<img class="ending-bg"
+     src="{{ development_asset_path }}/images/ending.png"
+     onerror="this.style.display='none'"
+     alt="">
+
+<div class="ending-overlay"></div>
+
+<main class="ending-content">
+    <img src="{{ shared_asset_path }}/dustie.svg"
+         class="dustie"
+         alt="AI Editor Dustie">
+
+    <div class="dustie-title">
+        AI Editor Dustie
+    </div>
+
+    <div class="ending-eyebrow">
+        TODAY'S UPDATE COMPLETE<br>
+        SEE YOU TOMORROW
+    </div>
+
+    <h1 class="ending-title">
+        내일도 주요<br>
+        <span class="gold">정비사업과 개발 변화</span><br>
+        를 확인하겠습니다.
+    </h1>
+
+    <div class="ending-update">
+        매일 공식자료 업데이트
+    </div>
+</main>
+
+{% endblock %}

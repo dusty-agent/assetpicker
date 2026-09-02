@@ -2,6 +2,7 @@
 
 {% block style %}
 
+
 /* =========================================
    ISSUE BACKGROUND
 ========================================= */
@@ -50,7 +51,9 @@
 }
 
 
-/* HOT ISSUE */
+/* =========================================
+   HOT ISSUE
+========================================= */
 
 .eyebrow {
     text-align: center;
@@ -60,11 +63,13 @@
 
     letter-spacing: 0.4px;
 
-    color: #d4af37;
+    color: #F6D85B;
 }
 
 
-/* ISSUE 1 */
+/* =========================================
+   ISSUE NUMBER
+========================================= */
 
 .issue-number {
     margin-top: 17px;
@@ -76,16 +81,19 @@
 
     letter-spacing: 1.2px;
 
-    color: rgba(
-        255,
-        255,
-        255,
-        0.52
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.52
+        );
 }
 
 
-/* 제목 */
+/* =========================================
+   TITLE
+========================================= */
 
 .issue-title {
     margin: 48px auto 0;
@@ -115,7 +123,9 @@
 }
 
 
-/* Divider */
+/* =========================================
+   DIVIDER
+========================================= */
 
 .issue-divider {
     width: 110px;
@@ -125,11 +135,13 @@
 
     border-radius: 999px;
 
-    background: #d4af37;
+    background: #F6D85B;
 }
 
 
-/* Tags */
+/* =========================================
+   TAGS
+========================================= */
 
 .tags {
     margin-top: 40px;
@@ -170,11 +182,13 @@
     font-size: 28px;
     font-weight: 650;
 
-    color: #d4af37;
+    color: #F6D85B;
 }
 
 
-/* 본문 */
+/* =========================================
+   SUMMARY
+========================================= */
 
 .issue-summary {
     margin: 58px auto 0;
@@ -212,7 +226,41 @@
 }
 
 
-/* Sources */
+/* =========================================
+   NARRATION HIGHLIGHT
+   TTS가 읽는 첫 문장만 강조
+========================================= */
+
+.summary-first {
+    display: inline;
+
+    padding:
+        0
+        0.03em;
+
+    background:
+        linear-gradient(
+            transparent 68%,
+            rgba(255, 184, 28, 0.55) 68%,
+            rgba(255, 184, 28, 0.55) 91%,
+            transparent 91%
+        );
+
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+
+/* 읽지 않는 나머지 문장 */
+
+.summary-rest {
+    display: inline;
+}
+
+
+/* =========================================
+   SOURCES
+========================================= */
 
 .source {
     margin: 44px auto 0;
@@ -261,13 +309,15 @@
 
     font-weight: 700;
 
-    color: #d4af37;
+    color: #F6D85B;
 }
+
 
 {% endblock %}
 
 
 {% block content %}
+
 
 <div class="issue-bg"></div>
 
@@ -317,8 +367,32 @@
     {% endif %}
 
 
+    <!-- =====================================
+         SUMMARY
+
+         summary_first
+             TTS가 실제 읽는 첫 문장
+             → 형광펜 강조
+
+         summary_rest
+             화면에만 보여주는 나머지 내용
+             → 강조 없음
+    ====================================== -->
+
     <div class="issue-summary">
-        {{ card.summary }}
+
+        <span class="summary-first">
+            {{ card.summary_first }}
+        </span>
+
+        {% if card.summary_rest %}
+
+        <span class="summary-rest">
+            {{ card.summary_rest }}
+        </span>
+
+        {% endif %}
+
     </div>
 
 
@@ -344,6 +418,8 @@
 
     {% endif %}
 
+
 </div>
+
 
 {% endblock %}

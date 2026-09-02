@@ -1,0 +1,155 @@
+<style>
+
+:root {
+    --accent: #62E6DF;
+    --accent-soft: rgba(98, 230, 223, 0.30);
+    --accent-faint: rgba(98, 230, 223, 0.12);
+}
+
+@font-face {
+    font-family:"Pretendard";
+    src:url("{{ shared_asset_path }}/PretendardVariable.ttf") format("truetype");
+    font-style:normal;
+    font-weight:100 900;
+}
+
+* { box-sizing:border-box; }
+
+html, body {
+    width:1080px;
+    height:1920px;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+}
+
+body {
+    font-family:Pretendard,"Noto Sans KR",Arial,sans-serif;
+    color:#fff;
+    background:#050b12;
+}
+
+.page {
+    position:relative;
+    width:1080px;
+    height:1920px;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 50% 24%,rgba(26,42,61,.46) 0%,rgba(9,18,29,.18) 38%,rgba(5,11,18,0) 65%),
+        linear-gradient(180deg,#09131f 0%,#07111b 45%,#050b12 100%);
+}
+
+.header {
+    position:absolute;
+    top:72px;
+    left:80px;
+    right:80px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    z-index:100;
+}
+
+.header-brand {
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    opacity:.5;
+}
+
+.logo {
+    width:250px;
+    height:auto;
+    display:block;
+}
+
+.header-subtitle {
+    margin-top:16px;
+    font-size:25px;
+    font-weight:500;
+    line-height:1;
+    color:#fff;
+}
+
+.page-number {
+    position:absolute;
+    top:8px;
+    right:0;
+    font-size:29px;
+    font-weight:700;
+    letter-spacing:.8px;
+    color:rgba(255,255,255,.82);
+}
+
+.content {
+    position:absolute;
+    top:310px;
+    left:84px;
+    right:110px;
+    bottom:250px;
+    display:flex;
+    flex-direction:column;
+    z-index:10;
+}
+
+.footer {
+    position:absolute;
+    left:82px;
+    right:112px;
+    bottom:32px;
+    min-height:82px;
+    padding-top:24px;
+    border-top:1px solid var(--accent-soft);
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    z-index:20;
+}
+
+.footer-inner {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:24px;
+    width:100%;
+}
+
+.footer-logo { width:170px; height:auto; opacity:.62; }
+.footer-divider { width:1px; height:38px; background:rgba(255,255,255,.20); }
+.footer-powered { font-size:18px; line-height:1.35; color:rgba(255,255,255,.48); text-align:center; }
+.footer-powered strong {
+    color:var(--accent);
+    font-weight:700;
+}
+.footer-right { font-size:14px; line-height:1.45; color:rgba(255,255,255,.30); text-align:left; }
+.gold {
+    color: var(--accent);
+}
+
+{% block style %}{% endblock %}
+</style>
+
+<div class="page">
+    <header class="header">
+        <div class="header-brand">
+            <img src="{{ shared_asset_path }}/icons/APDaily.svg" class="logo" alt="AP Daily">
+            <div class="header-subtitle">{{ today }}</div>
+        </div>
+
+        <div class="page-number">{{ page }} / {{ total }}</div>
+    </header>
+
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <img class="footer-logo" src="{{ shared_asset_path }}/icons/logo_white.svg" alt="AssetPicker">
+            <div class="footer-divider"></div>
+            <div class="footer-powered">Powered by<br><strong>Dustie</strong></div>
+            <div class="footer-divider"></div>
+            <div class="footer-right">Copyright © AssetPicker<br>Built with DustyDraft®</div>
+        </div>
+    </footer>
+</div>

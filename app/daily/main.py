@@ -147,6 +147,45 @@ def join_title_summary(
         parts
     )
 
+def to_polite_narration(
+    text: str,
+) -> str:
+
+    text = (
+        text
+        .strip()
+    )
+
+    replacements = [
+        ("나왔다.", "나왔습니다."),
+        ("이어졌다.", "이어졌습니다."),
+        ("커졌다.", "커졌습니다."),
+        ("확산됐다.", "확산됐습니다."),
+        ("증가했다.", "증가했습니다."),
+        ("감소했다.", "감소했습니다."),
+        ("상승했다.", "상승했습니다."),
+        ("하락했다.", "하락했습니다."),
+        ("밝혔다.", "밝혔습니다."),
+        ("발표했다.", "발표했습니다."),
+        ("전망했다.", "전망했습니다."),
+        ("지적했다.", "지적했습니다."),
+        ("분석했다.", "분석했습니다."),
+        ("보였다.", "보였습니다."),
+        ("나타났다.", "나타났습니다."),
+        ("확인됐다.", "확인됐습니다."),
+        ("제기됐다.", "제기됐습니다."),
+    ]
+
+    for old, new in replacements:
+        if text.endswith(old):
+            return (
+                text[
+                    :-len(old)
+                ]
+                + new
+            )
+
+    return text
 
 # ==================================================
 # Narration Scripts
@@ -226,14 +265,19 @@ def build_narration_scripts(
                 summary
             )
         )
-
+        
+        first_sentence_narration = (
+            to_polite_narration(
+                first_sentence
+            )
+        )
 
         narration_scripts[
             f"issue_{i}"
         ] = (
             join_title_summary(
                 title,
-                first_sentence,
+                first_sentence_narration,
             )
         )
 
@@ -942,6 +986,48 @@ def main():
         )
 
 
+        # ==================================================
+        # Summary
+        #
+        # TTS가 실제로 읽는 첫 문장과
+        # 화면에만 보여주는 나머지 문장을 분리
+        # ==================================================
+
+        summary = (
+            card.get(
+                "summary",
+                "",
+            )
+            or ""
+        ).strip()
+
+
+        summary_first = (
+            get_first_sentence(
+                summary
+            )
+        )
+
+
+        summary_rest = (
+            summary[
+                len(summary_first):
+            ]
+            .strip()
+        )
+
+
+        # 기존 card 데이터는 그대로 유지하면서
+        # 쇼츠 템플릿용 필드만 추가
+        card["summary_first"] = (
+            summary_first
+        )
+
+        card["summary_rest"] = (
+            summary_rest
+        )
+
+
         page_defs.append(
             {
                 "template":
@@ -1162,8 +1248,11 @@ def main():
             output_path=(
                 short_video_path
             ),
-        )
 
+            scripts=(
+                narration_scripts
+            ),
+        )
 
         print(
             "✅ Shorts video created"

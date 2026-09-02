@@ -47,10 +47,24 @@ client = OpenAI()
 
 
 # ==================================================
-# TTS Settings
+# Default TTS Settings
 # ==================================================
 
-VOICE = "marin"
+DEFAULT_VOICE = "marin"
+
+DEFAULT_INSTRUCTIONS = (
+    "20~30대의 밝고 자연스러운 "
+    "한국어 여성 진행자처럼 읽는다. "
+    "젊고 세련된 느낌으로 전달한다. "
+    "과하게 진지한 뉴스 앵커 톤은 피한다. "
+    "친근하지만 가볍지 않게 읽는다. "
+    "모든 문장은 자연스러운 존댓말로 읽는다. "
+    "'~다', '~한다', '~됐다' 같은 반말형 서술체는 피하고, "
+    "'~습니다', '~합니다', '~됐습니다', '~입니다' 형태의 "
+    "정중한 뉴스 브리핑 말투를 사용한다. "
+    "문장 사이의 쉼은 짧게 한다. "
+    "또렷하고 경쾌하게 발음한다."
+)
 
 # AssetPicker 기본 나레이션 속도
 TTS_SPEED = 1.15
@@ -83,6 +97,10 @@ def require_ffmpeg():
 def generate_tts(
     text: str,
     output_path: Path,
+    *,
+    voice: str = DEFAULT_VOICE,
+    instructions: str = DEFAULT_INSTRUCTIONS,
+    speed: float = TTS_SPEED,
 ) -> Path:
 
     require_ffmpeg()
@@ -108,7 +126,8 @@ def generate_tts(
 
     print(
         f"🎙️ TTS: "
-        f"{output_path.name}"
+        f"{output_path.name} "
+        f"| voice={voice}"
     )
 
 
@@ -140,19 +159,11 @@ def generate_tts(
             .create(
                 model="gpt-4o-mini-tts",
 
-                voice=VOICE,
+                voice=voice,
 
                 input=text,
 
-                instructions=(
-                    "20~30대의 밝고 자연스러운 "
-                    "한국어 여성 진행자처럼 읽는다. "
-                    "젊고 세련된 느낌으로 전달한다. "
-                    "과하게 진지한 뉴스 앵커 톤은 피한다. "
-                    "친근하지만 가볍지 않게 읽는다. "
-                    "문장 사이의 쉼은 짧게 한다. "
-                    "또렷하고 경쾌하게 발음한다."
-                ),
+                instructions=instructions,
 
                 response_format="mp3",
             )
@@ -177,7 +188,7 @@ def generate_tts(
                 str(raw_path),
 
                 "-filter:a",
-                f"atempo={TTS_SPEED}",
+                f"atempo={speed}",
 
                 "-vn",
 
@@ -189,7 +200,7 @@ def generate_tts(
 
         print(
             f"   ⚡ "
-            f"{TTS_SPEED}x speed"
+            f"{speed}x speed"
         )
 
 
@@ -205,3 +216,55 @@ def generate_tts(
         if raw_path.exists():
 
             raw_path.unlink()
+            
+# ==================================================
+# Audio Duration
+# ==================================================
+
+def get_audio_duration(
+    audio_path: Path,
+) -> float:
+
+    require_ffmpeg()
+
+    audio_path = Path(audio_path)
+
+    if not audio_path.exists():
+        raise FileNotFoundError(
+            f"오디오 파일을 찾을 수 없습니다: {audio_path}"
+        )
+
+    result = subprocess.run(
+        [
+            str(FFMPEG),
+            "-i",
+            str(audio_path),
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        encoding="utf-8",
+        errors="ignore",
+    )
+
+    import re
+
+    match = re.search(
+        r"Duration:\s*(\d+):(\d+):([\d.]+)",
+        result.stderr,
+    )
+
+    if not match:
+        raise RuntimeError(
+            f"오디오 길이를 읽을 수 없습니다: {audio_path}"
+        )
+
+    hours = int(match.group(1))
+    minutes = int(match.group(2))
+    seconds = float(match.group(3))
+
+    return (
+        hours * 3600
+        + minutes * 60
+        + seconds
+    )
