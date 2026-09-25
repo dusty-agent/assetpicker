@@ -1,4 +1,4 @@
-name: AP Daily
+name: Market Reader
 
 on:
   workflow_dispatch:
@@ -21,37 +21,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install Playwright
-        run: |
-          python -m playwright install --with-deps chromium
-
       - name: Install FFmpeg
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
-      - name: Set KST date
-        run: |
-          echo "AP_DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)" >> "$GITHUB_ENV"
-
-      - name: Run AP Daily
+      - name: Run Market Reader
         env:
+          KOREAEXIM_EXCHANGE_API_KEY: ${{ secrets.KOREAEXIM_EXCHANGE_API_KEY }}
+          KOREAEXIM_INTEREST_API_KEY: ${{ secrets.KOREAEXIM_INTEREST_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
           TO_EMAIL: ${{ secrets.TO_EMAIL }}
-        run: |
-          python -m app.daily.main
 
-      - name: Check AP Daily Output
+          # YouTube credentials: use the exact variable names expected by
+          # app.market_reader / market.py once the uploader is wired in.
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+
+          FFMPEG_PATH: /usr/bin/ffmpeg
         run: |
-          echo "===================================="
-          echo "AP Daily Output"
-          echo "===================================="
-          find "output/daily/${AP_DATE}" -type f | sort || true
-          echo ""
-          echo "===================================="
-          echo "Daily Data"
-          echo "===================================="
-          find "data/daily/${AP_DATE}" -type f | sort || true
+          python -m app.market_reader.main

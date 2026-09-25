@@ -1,4 +1,4 @@
-name: AP Daily
+name: Development Update
 
 on:
   workflow_dispatch:
@@ -30,11 +30,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
-      - name: Set KST date
-        run: |
-          echo "AP_DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)" >> "$GITHUB_ENV"
-
-      - name: Run AP Daily
+      - name: Run Development Update
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
@@ -42,16 +38,4 @@ jobs:
           FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
           TO_EMAIL: ${{ secrets.TO_EMAIL }}
         run: |
-          python -m app.daily.main
-
-      - name: Check AP Daily Output
-        run: |
-          echo "===================================="
-          echo "AP Daily Output"
-          echo "===================================="
-          find "output/daily/${AP_DATE}" -type f | sort || true
-          echo ""
-          echo "===================================="
-          echo "Daily Data"
-          echo "===================================="
-          find "data/daily/${AP_DATE}" -type f | sort || true
+          python -m app.development.main

@@ -4,54 +4,97 @@ on:
   workflow_dispatch:
 
 jobs:
+
   build:
+
     runs-on: ubuntu-latest
 
     steps:
+
+      # ==========================================
+      # Checkout
+      # ==========================================
+
       - name: Checkout
         uses: actions/checkout@v4
+
+
+      # ==========================================
+      # Python
+      # ==========================================
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+
+      # ==========================================
+      # Python Dependencies
+      # ==========================================
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+
+      # ==========================================
+      # Playwright / Chromium
+      # ==========================================
+
       - name: Install Playwright
         run: |
           python -m playwright install --with-deps chromium
+
+
+      # ==========================================
+      # FFmpeg / FFprobe
+      # ==========================================
 
       - name: Install FFmpeg
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
+
+      # ==========================================
+      # KST Date
+      # ==========================================
+
       - name: Set KST date
         run: |
-          echo "AP_DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)" >> "$GITHUB_ENV"
+          echo "AP_DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)" >> $GITHUB_ENV
+
+
+      # ==========================================
+      # Run every AP Dailies 
+      # ==========================================
 
       - name: Run AP Daily
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
-          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+
         run: |
-          python -m app.daily.main
+          python morning.py
+
+
+      # ==========================================
+      # Output Check
+      # ==========================================
 
       - name: Check AP Daily Output
         run: |
           echo "===================================="
           echo "AP Daily Output"
           echo "===================================="
+
           find "output/daily/${AP_DATE}" -type f | sort || true
+
           echo ""
           echo "===================================="
           echo "Daily Data"
           echo "===================================="
+
           find "data/daily/${AP_DATE}" -type f | sort || true
