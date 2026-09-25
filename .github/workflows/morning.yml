@@ -1,4 +1,4 @@
-name: AP Daily
+name: AP Morning
 
 on:
   workflow_dispatch:
@@ -49,7 +49,7 @@ jobs:
 
 
       # ==========================================
-      # FFmpeg / FFprobe
+      # FFmpeg
       # ==========================================
 
       - name: Install FFmpeg
@@ -64,14 +64,18 @@ jobs:
 
       - name: Set KST date
         run: |
-          echo "AP_DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)" >> $GITHUB_ENV
+          echo "AP_DATE=$(TZ=Asia/Seoul date +%Y-%m-%d)" >> "$GITHUB_ENV"
 
 
       # ==========================================
-      # Run every AP Dailies 
+      # Run AP Morning
+      #
+      # AP Daily
+      # Development Update
+      # Market Reader
       # ==========================================
 
-      - name: Run AP Daily
+      - name: Run AP Morning
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
@@ -84,10 +88,10 @@ jobs:
       # Output Check
       # ==========================================
 
-      - name: Check AP Daily Output
+      - name: Check AP Morning Output
         run: |
           echo "===================================="
-          echo "AP Daily Output"
+          echo "AP Morning Output"
           echo "===================================="
 
           find "output/daily/${AP_DATE}" -type f | sort || true
@@ -98,3 +102,10 @@ jobs:
           echo "===================================="
 
           find "data/daily/${AP_DATE}" -type f | sort || true
+
+          echo ""
+          echo "===================================="
+          echo "Development Data"
+          echo "===================================="
+
+          find "data/development/${AP_DATE}" -type f | sort || true
